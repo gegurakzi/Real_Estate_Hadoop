@@ -1,0 +1,59 @@
+<configuration>
+        <!-- Site specific YARN configuration properties -->
+        <property>
+                <name>yarn.resourcemanager.scheduler.class</name>
+                <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</value>
+        </property>
+        <property>
+                <name>yarn.nodemanager.aux-services</name>
+                <value>mapreduce_shuffle</value>
+        </property>
+        <property>
+                <name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name>
+                <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+        </property>
+
+        <!-- for Resource Manager HA configuration -->
+        <!-- Address of the ZK-quorum. Used both for the state-store and embedded leader-election. -->
+        <property>
+                <name>hadoop.zk.address</name>
+                <value>master01:2181,master02:2181,slave01:2181</value>
+        </property>
+        <!--  -->
+        <property>
+                <name>yarn.resourcemanager.ha.enabled</name>
+                <value>true</value>
+        </property>
+        <property>
+                <name>yarn.resourcemanager.cluster-id</name>
+                <value>cluster1</value>
+        </property>
+        <property>
+                <name>yarn.resourcemanager.ha.rm-ids</name>
+                <value>rm01,rm02</value>
+        </property>
+        <property>
+                <name>yarn.resourcemanager.hostname.rm01</name>
+                <value>master01</value>
+        </property>
+        <property>
+                <name>yarn.resourcemanager.hostname.rm02</name>
+                <value>master02</value>
+        </property>
+        <property>
+                <name>yarn.web-proxy.address.rm01</name>
+                <value>master01:8090</value>
+        </property>
+        <property>
+                <name>yarn.web-proxy.address.rm02</name>
+                <value>master02:8090</value>
+        </property>
+        <property>
+                <name>yarn.resourcemanager.webapp.address.rm01</name>
+                <value>master01:8088</value>
+        </property>
+        <property>
+                <name>yarn.resourcemanager.webapp.address.rm02</name>
+                <value>master02:8088</value>
+        </property>
+</configuration>

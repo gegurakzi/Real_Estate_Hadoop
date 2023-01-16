@@ -1,0 +1,56 @@
+<configuration>
+        <property>
+                <name>dfs.nameservices</name>
+                <value>hadoop-cluster</value>
+        </property>
+        <property>
+                <name>dfs.namenode.name.dir</name>
+                <value>/usr/local/lib/hadoop-3.3.4/data/namenode</value>
+        </property>
+        <property>
+                <name>dfs.datanode.data.dir</name>
+                <value>/usr/local/lib/hadoop-3.3.4/data/datanode</value>
+        </property>
+        <property>
+                <name>dfs.journalnode.edits.dir</name>
+                <value>/usr/local/lib/hadoop-3.3.4/data/journalnode</value>
+        </property>
+        <property>
+                <name>dfs.ha.namenodes.hadoop-cluster</name>
+                <value>nn01,nn02</value>
+        </property>
+        <property>
+                <name>dfs.namenode.rpc-address.hadoop-cluster.nn01</name>
+                <value>master01:8020</value>
+        </property>
+        <property>
+                <name>dfs.namenode.rpc-address.hadoop-cluster.nn02</name>
+                <value>master02:8020</value>
+        </property>
+        <property>
+                <name>dfs.namenode.http-address.hadoop-cluster.nn01</name>
+                <value>master01:50070</value>
+        </property>
+        <property>
+                <name>dfs.namenode.http-address.hadoop-cluster.nn02</name>
+                <value>master02:50070</value>
+        </property>
+        <property>
+                <name>dfs.namenode.shared.edits.dir</name>
+                <value>qjournal://master01:8485;master02:8485;slave01:8485/hadoop-cluster</value>
+        </property>
+        <property>
+                <name>dfs.client.failover.proxy.provider.hadoop-cluster</name>
+                <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+        </property>
+
+        <!-- Failover configuration -->
+        <property>
+                <name>dfs.ha.automatic-failover.enabled</name>
+                <value>true</value>
+        </property>
+        <property>
+                <name>dfs.ha.fencing.methods</name>
+                <value>shell(/bin/true)</value>
+        </property>
+</configuration>

@@ -1,0 +1,214 @@
+version: "3.7"
+services:
+  master01:
+    image: cluster:node
+    container_name: master01
+    hostname: master01
+    deploy:
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 1536M
+    volumes:
+      - type: bind
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
+        target: /usr/local/lib/airflow-2.0.0/dags
+      - type: bind
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/logs
+        target: /usr/local/lib/airflow-2.0.0/logs
+    networks:
+      cluster-net:
+        ipv4_address: 172.16.238.2
+    ports:
+      - "9870:9870"
+      - "8088:8088"
+      - "8042:8042"
+      - "8793:8793"
+      - "9092:9092"
+      - "50070:50070"
+      - "19888:19888"
+      - "18080:18080"
+      - "4040:4040"
+      - "8090:8090"
+    extra_hosts:
+      - "master02:172.16.238.3"
+      - "slave01:172.16.238.4"
+      - "slave02:172.16.238.5"
+      - "slave03:172.16.238.6"
+      - "metastore:172.16.238.7"
+    stdin_open: true
+    tty: true
+
+  master02:
+    image: cluster:node
+    container_name: master02
+    hostname: master02
+    deploy:
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 1536M
+    volumes:
+      - type: bind
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
+        target: /usr/local/lib/airflow-2.0.0/dags
+      - type: bind
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/logs
+        target: /usr/local/lib/airflow-2.0.0/logs
+    networks:
+      cluster-net:
+        ipv4_address: 172.16.238.3
+    ports:
+      - "9871:9870"
+      - "8089:8088"
+      - "8794:8793"
+      - "8043:8042"
+      - "9093:9092"
+      - "50071:50070"
+      - "19889:19888"
+      - "18081:18081"
+      - "4041:4040"
+      - "8091:8090"
+    extra_hosts:
+      - "master01:172.16.238.2"
+      - "slave01:172.16.238.4"
+      - "slave02:172.16.238.5"
+      - "slave03:172.16.238.6"
+      - "metastore:172.16.238.7"
+    stdin_open: true
+    tty: true
+
+  slave01:
+    image: cluster:node
+    container_name: slave01
+    hostname: slave01
+    deploy:
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 1536M
+    volumes:
+      - type: bind
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
+        target: /usr/local/lib/airflow-2.0.0/dags
+      - type: bind
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/logs
+        target: /usr/local/lib/airflow-2.0.0/logs
+    networks:
+      cluster-net:
+        ipv4_address: 172.16.238.4
+    ports:
+      - "5082:5080"
+      - "5557:5555"
+      - "4369:4369"
+      - "5671:5671"
+      - "8044:8042"
+      - "8795:8793"
+      - "5672:5672"
+      - "9094:9092"
+      - "15672:15672"
+      - "25672:25672"
+      - "61613:61613"
+      - "61614:61614"
+      - "1883:1883"
+      - "8883:8883"
+    extra_hosts:
+      - "master01:172.16.238.2"
+      - "master02:172.16.238.3"
+      - "slave02:172.16.238.5"
+      - "slave03:172.16.238.6"
+      - "metastore:172.16.238.7"
+    stdin_open: true
+    tty: true
+
+  slave02:
+    image: cluster:node
+    container_name: slave02
+    hostname: slave02
+    deploy:
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 1536M
+    volumes:
+      - type: bind
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
+        target: /usr/local/lib/airflow-2.0.0/dags
+      - type: bind
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/logs
+        target: /usr/local/lib/airflow-2.0.0/logs
+    networks:
+      cluster-net:
+        ipv4_address: 172.16.238.5
+    ports:
+      - "8045:8042"
+      - "8796:8793"
+    extra_hosts:
+      - "master01:172.16.238.2"
+      - "master02:172.16.238.3"
+      - "slave01:172.16.238.4"
+      - "slave03:172.16.238.6"
+      - "metastore:172.16.238.7"
+    stdin_open: true
+    tty: true
+
+  slave03:
+    image: cluster:node
+    container_name: slave03
+    hostname: slave03
+    deploy:
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 1536M
+    volumes:
+      - type: bind
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
+        target: /usr/local/lib/airflow-2.0.0/dags
+      - type: bind
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/logs
+        target: /usr/local/lib/airflow-2.0.0/logs
+    networks:
+      cluster-net:
+        ipv4_address: 172.16.238.6
+    ports:
+      - "8046:8042"
+      - "8797:8793"
+    extra_hosts:
+      - "master01:172.16.238.2"
+      - "master02:172.16.238.3"
+      - "slave01:172.16.238.4"
+      - "slave02:172.16.238.5"
+      - "metastore:172.16.238.7"
+    stdin_open: true
+    tty: true
+
+  metastore:
+    image: mysql:8.0-debian
+    container_name: metastore
+    hostname: metastore
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 0107
+    networks:
+      cluster-net:
+        ipv4_address: 172.16.238.7
+    ports:
+      - "3306:3306"
+    extra_hosts:
+      - "master01:172.16.238.2"
+      - "master02:172.16.238.3"
+      - "slave01:172.16.238.4"
+      - "slave02:172.16.238.5"
+      - "slave03:172.16.238.6"
+    stdin_open: true
+    tty: true
+
+networks:
+  cluster-net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.238.0/24"
+
