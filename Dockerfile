@@ -26,7 +26,7 @@ ENV PYSPARK_PYTHON=$PYTHON_HOME
 # Hadoop installation
 RUN \
     mkdir -p /usr/local/lib && \
-    wget https://mirrors.sonic.net/apache/hadoop/common/hadoop-3.3.1/hadoop-3.3.1.tar.gz && \
+    wget https://mirrors.sonic.net/apache/hadoop/common/hadoop-3.3.4/hadoop-3.3.4.tar.gz && \
     tar xvzf hadoop-3.3.1.tar.gz && \
     mv hadoop-3.3.4 /usr/local/lib/hadoop-3.3.4
 ENV HADOOP_HOME=/usr/local/lib/hadoop-3.3.4
