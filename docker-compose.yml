@@ -165,7 +165,7 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 0107
+      MYSQL_ROOT_PASSWORD: root
     networks:
       cluster-net:
         ipv4_address: 172.16.238.7
