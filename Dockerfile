@@ -53,14 +53,14 @@ ENV ZOOKEEPER_HOME=/usr/local/lib/apache-zookeeper-3.7.1-bin
 ENV PATH=$PATH:$ZOOKEEPER_HOME/bin
 
 # Zookeeper env settings
-COPY lib/apache-zookeeper-3.7.1-bin/zoo.cfg $ZOOKEEPER_HOME/conf
+COPY ./lib/apache-zookeeper-3.7.1-bin/zoo.cfg $ZOOKEEPER_HOME/conf
 
 # Hadoop-Zookeeper HA env settings
-COPY lib/hadoop-3.3.4/etc/hadoop/core-site.xml $HADOOP_CONF_DIR
-COPY lib/hadoop-3.3.4/etc/hadoop/hdfs-site.xml $HADOOP_CONF_DIR
-COPY lib/hadoop-3.3.4/etc/hadoop/yarn-site.xml $HADOOP_CONF_DIR
-COPY lib/hadoop-3.3.4/etc/hadoop/mapred-site.xml $HADOOP_CONF_DIR
-COPY lib/hadoop-3.3.4/etc/hadoop/workers $HADOOP_CONF_DIR
+COPY ./lib/hadoop-3.3.4/etc/hadoop/core-site.xml $HADOOP_CONF_DIR
+COPY ./lib/hadoop-3.3.4/etc/hadoop/hdfs-site.xml $HADOOP_CONF_DIR
+COPY ./lib/hadoop-3.3.4/etc/hadoop/yarn-site.xml $HADOOP_CONF_DIR
+COPY ./lib/hadoop-3.3.4/etc/hadoop/mapred-site.xml $HADOOP_CONF_DIR
+COPY ./lib/hadoop-3.3.4/etc/hadoop/workers $HADOOP_CONF_DIR
 ENV HDFS_JOURNALNODE_USER=root
 ENV HDFS_ZKFC_USER=root
 ENV YARN_PROXYSERVER_USER=root
