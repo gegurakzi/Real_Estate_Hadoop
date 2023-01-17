@@ -4,11 +4,6 @@ services:
     image: cluster:node
     container_name: master01
     hostname: master01
-    deploy:
-      resources:
-        limits:
-          cpus: '0.20'
-          memory: 1536M
     volumes:
       - type: bind
         source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
@@ -43,11 +38,6 @@ services:
     image: cluster:node
     container_name: master02
     hostname: master02
-    deploy:
-      resources:
-        limits:
-          cpus: '0.20'
-          memory: 1536M
     volumes:
       - type: bind
         source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
@@ -82,11 +72,6 @@ services:
     image: cluster:node
     container_name: slave01
     hostname: slave01
-    deploy:
-      resources:
-        limits:
-          cpus: '0.20'
-          memory: 1536M
     volumes:
       - type: bind
         source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
@@ -125,11 +110,6 @@ services:
     image: cluster:node
     container_name: slave02
     hostname: slave02
-    deploy:
-      resources:
-        limits:
-          cpus: '0.20'
-          memory: 1536M
     volumes:
       - type: bind
         source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
@@ -156,11 +136,6 @@ services:
     image: cluster:node
     container_name: slave03
     hostname: slave03
-    deploy:
-      resources:
-        limits:
-          cpus: '0.20'
-          memory: 1536M
     volumes:
       - type: bind
         source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
