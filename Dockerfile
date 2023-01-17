@@ -45,15 +45,15 @@ ENV YARN_NODEMANAGER_USER=root
 
 # Zookeeper installation
 RUN \
-    wget https://mirror.navercorp.com/apache/zookeeper/zookeeper-3.6.3/apache-zookeeper-3.6.3-bin.tar.gz &&\
-    tar xvfz apache-zookeeper-3.6.3-bin.tar.gz && \
-    mv apache-zookeeper-3.6.3-bin /usr/local/lib/apache-zookeeper-3.6.3-bin && \
-    mkdir /usr/local/lib/apache-zookeeper-3.6.3-bin/data
-ENV ZOOKEEPER_HOME=/usr/local/lib/apache-zookeeper-3.6.3-bin
+    wget https://dlcdn.apache.org/zookeeper/zookeeper-3.7.1/apache-zookeeper-3.7.1-bin.tar.gz &&\
+    tar xvfz apache-zookeeper-3.7.1-bin.tar.gz && \
+    mv apache-zookeeper-3.7.1-bin /usr/local/lib/apache-zookeeper-3.7.1-bin && \
+    mkdir /usr/local/lib/apache-zookeeper-3.7.1-bin/data
+ENV ZOOKEEPER_HOME=/usr/local/lib/apache-zookeeper-3.7.1-bin
 ENV PATH=$PATH:$ZOOKEEPER_HOME/bin
 
 # Zookeeper env settings
-COPY lib/apache-zookeeper-3.6.3-bin/zoo.cfg $ZOOKEEPER_HOME/conf
+COPY lib/apache-zookeeper-3.7.1-bin/zoo.cfg $ZOOKEEPER_HOME/conf
 
 # Hadoop-Zookeeper HA env settings
 COPY lib/hadoop-3.3.4/etc/hadoop/core-site.xml $HADOOP_CONF_DIR
