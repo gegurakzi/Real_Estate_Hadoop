@@ -23,7 +23,7 @@ RUN \
     wget https://www.python.org/ftp/python/3.9.5/Python-3.9.5.tgz && \
     tar -xvf Python-3.9.5.tgz && \
     mv Python-3.9.5 /usr/bin/python-3.9.5 && \
-    cd Python-3.9.5 && \
+    cd /usr/bin/python-3.9.5 && \
     ./configure --enable-optimizations && \
     make altinstall
 ENV PYTHON_HOME=/usr/local/bin/python3.9
