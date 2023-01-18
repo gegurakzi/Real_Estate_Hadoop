@@ -31,7 +31,7 @@ quit;
 
 ## 5. Hadoop HA 클러스터 시작
 ```
-> bash lib/apache-zookeeper-3.7.1-bin/sbin/deploy-myid.sh
+> sudo bash lib/apache-zookeeper-3.7.1-bin/sbin/deploy-myid.sh
 master01> zkServer.sh start
 [master02 ~]$ zkServer.sh start
 [slave01 ~]$ zkServer.sh start
