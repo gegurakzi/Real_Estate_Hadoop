@@ -122,9 +122,9 @@ RUN \
     yum install python3-pip -y && \
     pip3 install --upgrade pip && \
     pip3 install setuptools-rust && \
-    pip3 install mysqlclient && \
+    pip3 install pymysql && \
     pip3 install --upgrade setuptools &&\
-    pip3 install apache-airflow
+    pip3 install apache-airflow==${AIRFLOW_VERSION}
 
 # Airflow env settings
 COPY lib/airflow-2.2.5/conf/airflow.cfg $AIRFLOW_HOME/conf
