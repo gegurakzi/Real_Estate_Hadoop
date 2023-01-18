@@ -108,10 +108,10 @@ COPY lib/spark-3.3.1-bin-hadoop3/conf/spark-defaults.conf $SPARK_HOME/conf/spark
 COPY lib/spark-3.3.1-bin-hadoop3/conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
 
 # Airflow installation
-ENV AIRFLOW_HOME=/usr/local/lib/airflow-2.5.0
+ENV AIRFLOW_HOME=/usr/local/lib/airflow-2.2.5
 ENV AIRFLOW_CONFIG=$AIRFLOW_HOME/conf/airflow.cfg
 RUN \
-    AIRFLOW_VERSION=2.5.0 && \
+    AIRFLOW_VERSION=2.2.5 && \
     PYTHON_VERSION=3.9 && \
     mkdir -p /usr/local/lib/airflow-${AIRFLOW_VERSION} && \
     export AIRFLOW_HOME=/usr/local/lib/airflow-${AIRFLOW_VERSION} && \
@@ -125,7 +125,7 @@ RUN \
     pip install "apache-airflow[celery]==${AIRFLOW_VERSION}" --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt"
 
 # Airflow env settings
-COPY lib/airflow-2.5.0/conf/airflow.cfg $AIRFLOW_HOME/conf
+COPY lib/airflow-2.2.5/conf/airflow.cfg $AIRFLOW_HOME/conf
 
 ENTRYPOINT ["/bin/bash"]
 
