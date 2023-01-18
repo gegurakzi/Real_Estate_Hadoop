@@ -42,10 +42,10 @@ RabbitMQ Server: 15672 Flower UI(web management for Airflow celery workers): 555
 > sudo docker exec -it metastore mysql -p
 CREATE DATABASE hive;
 CREATE DATABASE airflow;
-CREATE USER hive;
-CREATE USER airflow;
-GRANT ALL PRIVILEGES ON hive.* to 'hive'@'%' IDENTIFIED BY 'hive' WITH GRANT OPTION;
-GRANT ALL PRIVILEGES ON airflow.* to 'airflow'@'%' IDENTIFIED BY 'airflow' WITH GRANT OPTION;
+CREATE USER hive IDENTIFIED BY 'hive';
+CREATE USER airflow IDENTIFIED BY 'airflow';
+GRANT ALL PRIVILEGES ON hive.* TO 'hive'@'%';
+GRANT ALL PRIVILEGES ON airflow.* TO 'airflow'@'%';
 quit;
 ```
 

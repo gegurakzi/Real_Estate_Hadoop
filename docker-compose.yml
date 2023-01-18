@@ -8,9 +8,6 @@ services:
       - type: bind
         source: /home/malachai/hadoop-cluster/lib/apache-airflow-2.5.0/dags
         target: /usr/local/lib/apache-airflow-2.5.0/dags
-      - type: bind
-        source: /home/malachai/hadoop-cluster/lib/apache-airflow-2.5.0/logs
-        target: /usr/local/lib/apache-airflow-2.5.0/logs
     networks:
       cluster-net:
         ipv4_address: 172.16.238.2
@@ -42,9 +39,6 @@ services:
       - type: bind
         source: /home/malachai/hadoop-cluster/lib/apache-airflow-2.5.0/dags
         target: /usr/local/lib/apache-airflow-2.5.0/dags
-      - type: bind
-        source: /home/malachai/hadoop-cluster/lib/apache-airflow-2.5.0/logs
-        target: /usr/local/lib/apache-airflow-2.5.0/logs
     networks:
       cluster-net:
         ipv4_address: 172.16.238.3
@@ -76,9 +70,6 @@ services:
       - type: bind
         source: /home/malachai/hadoop-cluster/lib/apache-airflow-2.5.0/dags
         target: /usr/local/lib/apache-airflow-2.5.0/dags
-      - type: bind
-        source: /home/malachai/hadoop-cluster/lib/apache-airflow-2.5.0/logs
-        target: /usr/local/lib/apache-airflow-2.5.0/logs
     networks:
       cluster-net:
         ipv4_address: 172.16.238.4
@@ -114,9 +105,6 @@ services:
       - type: bind
         source: /home/malachai/hadoop-cluster/lib/apache-airflow-2.5.0/dags
         target: /usr/local/lib/apache-airflow-2.5.0/dags
-      - type: bind
-        source: /home/malachai/hadoop-cluster/lib/apache-airflow-2.5.0/logs
-        target: /usr/local/lib/apache-airflow-2.5.0/logs
     networks:
       cluster-net:
         ipv4_address: 172.16.238.5
@@ -140,9 +128,6 @@ services:
       - type: bind
         source: /home/malachai/hadoop-cluster/lib/apache-airflow-2.5.0/dags
         target: /usr/local/lib/apache-airflow-2.5.0/dags
-      - type: bind
-        source: /home/malachai/hadoop-cluster/lib/apache-airflow-2.5.0/logs
-        target: /usr/local/lib/apache-airflow-2.5.0/logs
     networks:
       cluster-net:
         ipv4_address: 172.16.238.6
