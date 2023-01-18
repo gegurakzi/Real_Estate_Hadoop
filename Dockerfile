@@ -22,15 +22,15 @@ ENV PATH=$PATH:$JAVA_HOME/bin
 RUN \
     wget https://www.python.org/ftp/python/3.9.5/Python-3.9.5.tgz && \
     tar -xvf Python-3.9.5.tgz && \
-    mv Python-3.9.5 /usr/bin/python-3.9.5 && \
-    cd /usr/bin/python-3.9.5 && \
+    mv Python-3.9.5 /usr/local/lib/python-3.9.5 && \
+    cd /usr/local/lib/python-3.9.5 && \
     ./configure --enable-optimizations && \
+    yum install make -y && \
     make altinstall && \
-    alternatives --install /usr/bin/python3 python3 /usr/local/bin/python3.9 1 && \
-    alternatives --set python3 /usr/local/bin/python3.9 && echo "2" | alternatives --config python && \
-    /usr/local/bin/python3.9 -m pip install --upgrade pip && \
-    alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.9 1 && alternatives --set pip /usr/local/bin/pip3.9
-ENV PYTHON_HOME=/usr/local/bin/python3.9
+    ln -Tfs /usr/local/bin/python3.9 /usr/bin/python3 && \
+    python3 -m pip install --upgrade pip && \
+    pip install --upgrade setuptools
+ENV PYTHON_HOME=/usr/local/lib/python3.9
 ENV PYSPARK_PYTHON=$PYTHON_HOME
 
 # Hadoop installation
@@ -112,26 +112,19 @@ COPY lib/spark-3.3.1-bin-hadoop3/conf/spark-defaults.conf $SPARK_HOME/conf/spark
 COPY lib/spark-3.3.1-bin-hadoop3/conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
 
 # Airflow installation
-ENV AIRFLOW_HOME=/usr/local/lib/airflow-2.2.5
-ENV AIRFLOW_CONFIG=$AIRFLOW_HOME/conf/airflow.cfg
+
 RUN \
-    AIRFLOW_VERSION=2.2.5 && \
-    PYTHON_VERSION=3.9 && \
-    mkdir -p /usr/local/lib/airflow-${AIRFLOW_VERSION} && \
-    export AIRFLOW_HOME=/usr/local/lib/airflow-${AIRFLOW_VERSION} && \
-    mkdir $AIRFLOW_HOME/dags && \
-    mkdir $AIRFLOW_HOME/logs && \
-    mkdir $AIRFLOW_HOME/output && \
-    mkdir $AIRFLOW_HOME/conf && \
-    yum install python3-pip -y && \
-    pip3 install --upgrade pip && \
-    pip3 install setuptools-rust && \
-    pip3 install pymysql && \
-    pip3 install --upgrade setuptools &&\
-    pip3 install apache-airflow==${AIRFLOW_VERSION}
+    pip install apache-airflow[celery]==2.5.0 && \
+    pip install pymysql
+    pip install apache-airflow-providers-mysql && \
+    mkdir /usr/local/lib/apache-airflow-2.5.0/logs && \
+    mkdir /usr/local/lib/apache-airflow-2.5.0/dags && \
+    mkdir /usr/local/lib/apache-airflow-2.5.0/plugins && \
+ENV AIRFLOW_HOME=/usr/local/lib/apache-airflow-2.5.0
+ENV AIRFLOW_CONFIG=$AIRFLOW_HOME/conf/airflow.cfg
 
 # Airflow env settings
-COPY lib/airflow-2.2.5/conf/airflow.cfg $AIRFLOW_HOME/conf
+COPY lib/apache-airflow-2.5.0/conf/airflow.cfg $AIRFLOW_HOME/conf
 
 ENTRYPOINT ["/bin/bash"]
 
