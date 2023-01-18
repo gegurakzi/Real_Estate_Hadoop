@@ -30,12 +30,12 @@ quit;
 ```
 
 ```
-[master01 ~]$ $HADOOP_HOME/bin/hdfs zkfc -formatZK
-[master01 ~]$ $HADOOP_HOME/bin/hdfs --daemon start journalnode
+[master01 ~]$ hdfs zkfc -formatZK
+[master01 ~]$ hdfs --daemon start journalnode
 [master01 ~]$ hdfs namenode -format
 [master02 ~]$ hdfs namenode -bootstrapStandby
 [master01 ~]$ start-dfs.sh
 [master01 ~]$ start-yarn.sh
-[master01 ~]$ $HADOOP_HOME/bin/mapred --daemon start historyserver
-[master02 ~]$ $HADOOP_HOME/bin/mapred --daemon start historyserver
+[master01 ~]$ mapred --daemon start historyserver
+[master02 ~]$ mapred --daemon start historyserver
 ```
