@@ -13,7 +13,7 @@ sudo docker-compose up -d
 ## 3. 컨테이너 간 SSH 키 공유
 ```
 sudo bash sbin/deploy-ssh-keys.sh
-sudo bash sbin/deploy-authorized-keys.sh
+sudo bash sbin/deploy-ssh-authorized-keys.sh
 ```
 * 기본적으로 SSH 접근하는 사용자는 root이기 때문에 sudo 권한으로 스크립트 실행
 
@@ -30,8 +30,13 @@ quit;
 ```
 
 ```
+[master01 ~]$ zkServer.sh start
+[master02 ~]$ zkServer.sh start
+[slave01 ~]$ zkServer.sh start
 [master01 ~]$ hdfs zkfc -formatZK
 [master01 ~]$ hdfs --daemon start journalnode
+[master02 ~]$ hdfs --daemon start journalnode
+[slave01 ~]$ hdfs --daemon start journalnode
 [master01 ~]$ hdfs namenode -format
 [master02 ~]$ hdfs namenode -bootstrapStandby
 [master01 ~]$ start-dfs.sh
