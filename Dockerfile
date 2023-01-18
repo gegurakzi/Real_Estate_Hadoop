@@ -116,9 +116,10 @@ RUN \
     yum install mysql-devel -y && \
     pip install pymysql && \
     pip install apache-airflow[mysql,celery]==2.5.0 && \
-    mkdir /usr/local/lib/apache-airflow-2.5.0/logs && \
-    mkdir /usr/local/lib/apache-airflow-2.5.0/dags && \
-    mkdir /usr/local/lib/apache-airflow-2.5.0/plugins
+    mkdir -p /usr/local/lib/apache-airflow-2.5.0/logs && \
+    mkdir -p /usr/local/lib/apache-airflow-2.5.0/dags && \
+    mkdir -p /usr/local/lib/apache-airflow-2.5.0/plugins && \
+    mkdir -p /usr/local/lib/apache-airflow-2.5.0/conf
 ENV AIRFLOW_HOME=/usr/local/lib/apache-airflow-2.5.0
 ENV AIRFLOW_CONFIG=$AIRFLOW_HOME/conf/airflow.cfg
 
