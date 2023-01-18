@@ -1,5 +1,25 @@
 # Hadoop cluster deployment
 
+```
+Namenode: master01, master02
+Datanode: slave01, slave02, slave03
+Jouralnode: master01, master02, slave01
+Hive: master01, master02
+Spark: master01, master02
+Airflow(celery workers): master01, master02, slave01(with webserver, scheduler), slave02, slave03
+
+Namenode Web: 50070(master01) 50071(master02)
+Node Manager Web: 8042(master01) 8043(master02)
+Resource Manager Web: 8088(master01) 8089(master02)
+MapReduce JobHistory Web: 19888(master01) 19889(master02)
+Spark Application Manager Web(4040 4041 -> redirect to YARN Resource Manager/Spark Application): 8088/app_id#(master01) 8089/app_id#(master02)
+Spark History Web: 18080(master01) 18081(master02)
+Airflow WebServer: 5082(default: 8080)
+RabbitMQ Server: 15672 Flower UI(web management for Airflow celery workers): 5555
+```
+
+
+
 ## 1. Dockerfile 빌드
 ```
 > sudo docker build -t cluster:node .
@@ -40,8 +60,8 @@ master01> zkServer.sh start
 [master02 ~]$ hdfs --daemon start journalnode
 [slave01 ~]$ hdfs --daemon start journalnode
 [master01 ~]$ hdfs namenode -format
-[master02 ~]$ hdfs namenode -bootstrapStandby
 [master01 ~]$ start-dfs.sh
+[master02 ~]$ hdfs namenode -bootstrapStandby
 [master01 ~]$ start-yarn.sh
 [master01 ~]$ mapred --daemon start historyserver
 [master02 ~]$ mapred --daemon start historyserver

@@ -122,6 +122,7 @@ RUN \
     yum install python3-pip -y && \
     pip3 install --upgrade pip && \
     pip3 install setuptools-rust && \
+    pip3 install mysqlclient && \
     pip3 install --upgrade setuptools &&\
     pip3 install apache-airflow
 
