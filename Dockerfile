@@ -36,8 +36,8 @@ ENV PATH=$PATH:$HADOOP_HOME/sbin
 # Hadoop env settings
 RUN \
     echo \
-        $'export HADOOP_PID_DIR=/opt/hadoop/current/pids \n\
-          export JAVA_HOME=/opt/jdk/current \n\
+        $'export HADOOP_PID_DIR=/usr/local/lib/hadoop-3.3.4/pids \n\
+          export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.352.b08-2.el7_9.x86_64 \n\
           export HDFS_NAMENODE_USER=\"root\" \n\
           export HDFS_DATANODE_USER=\"root\" \n\
           export HDFS_SECONDARYNAMENODE_USER=\"root\" \n\
