@@ -6,10 +6,10 @@ services:
     hostname: master01
     volumes:
       - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.2.5/dags
         target: /usr/local/lib/airflow-2.0.0/dags
       - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/logs
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.2.5/logs
         target: /usr/local/lib/airflow-2.0.0/logs
     networks:
       cluster-net:
@@ -40,10 +40,10 @@ services:
     hostname: master02
     volumes:
       - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.2.5/dags
         target: /usr/local/lib/airflow-2.0.0/dags
       - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/logs
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.2.5/logs
         target: /usr/local/lib/airflow-2.0.0/logs
     networks:
       cluster-net:
@@ -74,10 +74,10 @@ services:
     hostname: slave01
     volumes:
       - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.2.5/dags
         target: /usr/local/lib/airflow-2.0.0/dags
       - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/logs
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.2.5/logs
         target: /usr/local/lib/airflow-2.0.0/logs
     networks:
       cluster-net:
@@ -112,10 +112,10 @@ services:
     hostname: slave02
     volumes:
       - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.2.5/dags
         target: /usr/local/lib/airflow-2.0.0/dags
       - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/logs
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.2.5/logs
         target: /usr/local/lib/airflow-2.0.0/logs
     networks:
       cluster-net:
@@ -138,10 +138,10 @@ services:
     hostname: slave03
     volumes:
       - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.2.5/dags
         target: /usr/local/lib/airflow-2.0.0/dags
       - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/logs
+        source: /home/malachai/hadoop-cluster/lib/airflow-2.2.5/logs
         target: /usr/local/lib/airflow-2.0.0/logs
     networks:
       cluster-net:
