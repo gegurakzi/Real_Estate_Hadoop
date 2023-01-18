@@ -120,8 +120,7 @@ RUN \
     mkdir $AIRFLOW_HOME/output && \
     mkdir $AIRFLOW_HOME/conf && \
     yum install python3-pip -y && \
-    pip3 install --upgrade pip && \
-    pip install apache-airflow
+    pip3 install apache-airflow
 
 # Airflow env settings
 COPY lib/airflow-2.2.5/conf/airflow.cfg $AIRFLOW_HOME/conf
