@@ -25,7 +25,11 @@ RUN \
     mv Python-3.9.5 /usr/bin/python-3.9.5 && \
     cd /usr/bin/python-3.9.5 && \
     ./configure --enable-optimizations && \
-    make altinstall
+    make altinstall && \
+    alternatives --install /usr/bin/python3 python3 /usr/local/bin/python3.9 1 && \
+    alternatives --set python3 /usr/local/bin/python3.9 && echo "2" | alternatives --config python && \
+    /usr/local/bin/python3.9 -m pip install --upgrade pip && \
+    alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.9 1 && alternatives --set pip /usr/local/bin/pip3.9
 ENV PYTHON_HOME=/usr/local/bin/python3.9
 ENV PYSPARK_PYTHON=$PYTHON_HOME
 
