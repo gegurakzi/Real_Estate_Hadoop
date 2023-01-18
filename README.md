@@ -5,9 +5,9 @@ sudo docker build -t cluster:node .
 ```
 
 ```
-docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=root -d mysql:8.0-debian
+sudo docker run --name metastore -e MYSQL_ROOT_PASSWORD=root -d mysql:8.0-debian
 sudo docker exec -it metastore apt update -y
-sudo docker exec -it metastore apt install ssh openssh-server -y
+sudo docker exec -it metastore apt install openssh-server openssh-clients openssh-askpass -y
 sudo docker exec -it metastore service start
 sudo docker exec -it metastore mysql -p
 sudo docker exec -it metastore /bin/bash
