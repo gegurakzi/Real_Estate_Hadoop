@@ -115,7 +115,7 @@ COPY lib/spark-3.3.1-bin-hadoop3/conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
 RUN \
     yum install mysql-devel -y && \
     pip install pymysql && \
-    pip install apache-airflow[mysql, celery]==2.5.0 && \
+    pip install apache-airflow[mysql,celery]==2.5.0 && \
     mkdir /usr/local/lib/apache-airflow-2.5.0/logs && \
     mkdir /usr/local/lib/apache-airflow-2.5.0/dags && \
     mkdir /usr/local/lib/apache-airflow-2.5.0/plugins
