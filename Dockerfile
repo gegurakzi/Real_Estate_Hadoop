@@ -120,9 +120,6 @@ RUN \
     yum install python3-pip -y && \
     pip3 install --upgrade pip && \
     pip install --upgrade setuptools &&\
-    pip install -U pip setuptools wheel && \
-    export SLUGIFY_USES_TEXT_UNIDECODE=yes && \
-    yum -y install epel-release gcc gcc-c++ glibc-core glibc-common mysql-devel python-devel python-setuptools python3-devel python3-pip openldap-devel && \
     pip install apache-airflow==${AIRFLOW_VERSION} --constraint https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt
 ENV AIRFLOW_HOME=/usr/local/lib/airflow-2.5.0
 ENV AIRFLOW_CONFIG=$AIRFLOW_HOME/conf/airflow.cfg
