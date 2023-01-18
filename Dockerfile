@@ -28,7 +28,6 @@ RUN \
     yum install make -y && \
     make altinstall && \
     ln -Tfs /usr/local/bin/python3.9 /usr/bin/python3 && \
-    ln -Tfs /usr/local/bin/python3.9-config /usr/bin/python3-config && \
     python3 -m pip install --upgrade pip && \
     pip install --upgrade setuptools
 
