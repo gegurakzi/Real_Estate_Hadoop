@@ -117,6 +117,8 @@ RUN \
     mkdir $AIRFLOW_HOME/logs && \
     mkdir $AIRFLOW_HOME/output && \
     mkdir $AIRFLOW_HOME/conf && \
+    yum install python3-pip && \
+    pip3 install --upgrade pip && \
     pip install --upgrade setuptools &&\
     pip install -U pip setuptools wheel && \
     export SLUGIFY_USES_TEXT_UNIDECODE=yes && \
