@@ -20,6 +20,6 @@ sudo docker exec -u 0 slave03 /usr/sbin/sshd-keygen -A
 sudo docker exec -u 0 slave03 /usr/sbin/sshd
 sudo docker exec -u 0 slave03 ssh-keygen -t rsa -P '' -f /root/.ssh/id_rsa
 
-sudo docker exec -u 0 metastore ssh-keygen -A
-sudo docker exec -u 0 metastore service ssh start
-sudo docker exec -u 0 metastore ssh-keygen -t rsa -P '' -f /root/.ssh/id_rsa
+sudo docker exec -u 0 metastore sh -c 'ssh-keygen -A'
+sudo docker exec -u 0 metastore sh -c 'service ssh start'
+sudo docker exec -u 0 metastore sh -c 'ssh-keygen -t rsa -P '' -f /root/.ssh/id_rsa'
