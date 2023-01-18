@@ -109,7 +109,7 @@ COPY lib/spark-3.3.1-bin-hadoop3/conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
 
 # Airflow installation
 RUN \
-    AIRFLOW_VERSION=2.5.0 && \
+    AIRFLOW_VERSION=2.2.4 && \
     PYTHON_VERSION=3.9 && \
     mkdir -p /usr/local/lib/airflow-${AIRFLOW_VERSION} && \
     export AIRFLOW_HOME=/usr/local/lib/airflow-${AIRFLOW_VERSION} && \
@@ -124,11 +124,11 @@ RUN \
     export SLUGIFY_USES_TEXT_UNIDECODE=yes && \
     yum -y install epel-release gcc gcc-c++ glibc-core glibc-common mysql-devel python-devel python-setuptools python3-devel python3-pip openldap-devel && \
     pip install apache-airflow==${AIRFLOW_VERSION} --constraint https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt
-ENV AIRFLOW_HOME=/usr/local/lib/airflow-2.5.0
+ENV AIRFLOW_HOME=/usr/local/lib/airflow-2.2.4
 ENV AIRFLOW_CONFIG=$AIRFLOW_HOME/conf/airflow.cfg
 
 # Airflow env settings
-COPY lib/airflow-2.5.0/conf/airflow.cfg $AIRFLOW_HOME/conf
+COPY lib/airflow-2.2.4/conf/airflow.cfg $AIRFLOW_HOME/conf
 
 ENTRYPOINT ["/bin/bash"]
 
