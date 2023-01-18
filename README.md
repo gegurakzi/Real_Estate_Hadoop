@@ -1,20 +1,41 @@
 # Hadoop cluster deployment
 
+## 1. Dockerfile 빌드
 ```
 sudo docker build -t cluster:node .
 ```
 
+## 2. docker-compose 실행
 ```
-sudo docker run --name metastore -e MYSQL_ROOT_PASSWORD=root -d mysql:8.0-debian
-sudo docker exec -it metastore apt update -y
-sudo docker exec -it metastore apt install openssh-server openssh-clients openssh-askpass -y
-sudo docker exec -it metastore service start
+sudo docker-compose up -d
+```
+
+## 3. 컨테이너 간 SSH 키 공유
+```
+sudo bash sbin/deploy-ssh-keys.sh
+sudo bash sbin/deploy-authorized-keys.sh
+```
+* 기본적으로 SSH 접근하는 사용자는 root이기 때문에 sudo 권한으로 스크립트 실행
+
+## 4. MySQL metastore 컨테이너에 hive, airflow metastore 추가
+```
 sudo docker exec -it metastore mysql -p
-sudo docker exec -it metastore /bin/bash
 CREATE DATABASE hive;
 CREATE DATABASE airflow;
 CREATE USER hive;
 CREATE USER airflow;
 GRANT ALL PRIVILEGES ON hive.* to 'hive'@'%' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON airflow.* to 'airflow'@'%' WITH GRANT OPTION;
+quit;
+```
+
+```
+[master01 ~]$ $HADOOP_HOME/bin/hdfs zkfc -formatZK
+[master01 ~]$ $HADOOP_HOME/bin/hdfs --daemon start journalnode
+[master01 ~]$ hdfs namenode -format
+[master02 ~]$ hdfs namenode -bootstrapStandby
+[master01 ~]$ start-dfs.sh
+[master01 ~]$ start-yarn.sh
+[master01 ~]$ $HADOOP_HOME/bin/mapred --daemon start historyserver
+[master02 ~]$ $HADOOP_HOME/bin/mapred --daemon start historyserver
 ```

@@ -14,7 +14,7 @@ RUN \
 # Java installation
 RUN \
     yum install java-1.8.0-openjdk-devel.x86_64 -y
-ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.332.b09-1.el7_9.x86_64
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.352.b08-2.el7_9.x86_64
 ENV PATH=$PATH:$JAVA_HOME/bin
 
 # Python3 installation
