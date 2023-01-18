@@ -31,8 +31,6 @@ RUN \
     ln -Tfs /usr/local/bin/python3.9-config /usr/bin/python3-config && \
     python3 -m pip install --upgrade pip && \
     pip install --upgrade setuptools
-ENV PYTHON_HOME=/usr/local/lib/python3.9
-ENV PYSPARK_PYTHON=$PYTHON_HOME
 
 # Hadoop installation
 RUN \
