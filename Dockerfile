@@ -120,7 +120,8 @@ RUN \
     mkdir $AIRFLOW_HOME/output && \
     mkdir $AIRFLOW_HOME/conf && \
     yum install python3-pip -y && \
-    pip3 install "apache-airflow[celery]==${AIRFLOW_VERSION}" --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt"
+    pip install --upgrade pip && \
+    pip install "apache-airflow[celery]==${AIRFLOW_VERSION}" --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt"
 
 # Airflow env settings
 COPY lib/airflow-2.2.5/conf/airflow.cfg $AIRFLOW_HOME/conf
