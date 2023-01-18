@@ -44,8 +44,8 @@ CREATE DATABASE hive;
 CREATE DATABASE airflow;
 CREATE USER hive;
 CREATE USER airflow;
-GRANT ALL PRIVILEGES ON hive.* to 'hive'@'%' WITH GRANT OPTION;
-GRANT ALL PRIVILEGES ON airflow.* to 'airflow'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON hive.* to 'hive'@'%' IDENTIFIED BY 'hive' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON airflow.* to 'airflow'@'%' IDENTIFIED BY 'airflow' WITH GRANT OPTION;
 quit;
 ```
 
