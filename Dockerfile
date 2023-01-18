@@ -29,7 +29,8 @@ RUN \
     make altinstall && \
     ln -Tfs /usr/local/bin/python3.9 /usr/bin/python3 && \
     python3 -m pip install --upgrade pip && \
-    pip install --upgrade setuptools
+    pip install --upgrade setuptools && \
+    cd /
 
 # Hadoop installation
 RUN \
