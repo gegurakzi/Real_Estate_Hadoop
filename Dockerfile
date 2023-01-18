@@ -10,7 +10,7 @@ RUN \
     yum install vim-enhanced -y && \
     yum install wget -y && \
     yum install openssh-server openssh-clients openssh-askpass -y && \
-    yum install gcc openssl-devel bzip2-devel libffi-devel -y
+    yum install gcc make openssl-devel bzip2-devel libffi-devel -y
 
 # Java installation
 RUN \
