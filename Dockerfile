@@ -108,6 +108,8 @@ COPY lib/spark-3.3.1-bin-hadoop3/conf/spark-defaults.conf $SPARK_HOME/conf/spark
 COPY lib/spark-3.3.1-bin-hadoop3/conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
 
 # Airflow installation
+ENV AIRFLOW_HOME=/usr/local/lib/airflow-2.5.0
+ENV AIRFLOW_CONFIG=$AIRFLOW_HOME/conf/airflow.cfg
 RUN \
     AIRFLOW_VERSION=2.5.0 && \
     PYTHON_VERSION=3.9 && \
@@ -121,8 +123,7 @@ RUN \
     pip3 install --upgrade pip && \
     pip install --upgrade setuptools &&\
     pip install apache-airflow==${AIRFLOW_VERSION} --constraint https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt
-ENV AIRFLOW_HOME=/usr/local/lib/airflow-2.5.0
-ENV AIRFLOW_CONFIG=$AIRFLOW_HOME/conf/airflow.cfg
+
 
 # Airflow env settings
 COPY lib/airflow-2.5.0/conf/airflow.cfg $AIRFLOW_HOME/conf
