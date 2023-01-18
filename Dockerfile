@@ -9,7 +9,8 @@ RUN \
     yum install net-tools -y && \
     yum install vim-enhanced -y && \
     yum install wget -y && \
-    yum install openssh-server openssh-clients openssh-askpass -y
+    yum install openssh-server openssh-clients openssh-askpass -y && \
+    yum install gcc openssl-devel bzip2-devel libffi-devel -y
 
 # Java installation
 RUN \
@@ -19,8 +20,13 @@ ENV PATH=$PATH:$JAVA_HOME/bin
 
 # Python3 installation
 RUN \
-    yum install python3 -y
-ENV PYTHON_HOME=/usr/bin/python3
+    wget https://www.python.org/ftp/python/3.9.5/Python-3.9.5.tgz && \
+    tar -xvf Python-3.9.5.tgz && \
+    mv Python-3.9.5 /usr/bin/python-3.9.5 && \
+    cd Python-3.9.5 && \
+    ./configure --enable-optimizations && \
+    make altinstall
+ENV PYTHON_HOME=/usr/local/bin/python3.9
 ENV PYSPARK_PYTHON=$PYTHON_HOME
 
 # Hadoop installation
@@ -104,7 +110,7 @@ COPY lib/spark-3.3.1-bin-hadoop3/conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
 # Airflow installation
 RUN \
     AIRFLOW_VERSION=2.5.0 && \
-    PYTHON_VERSION=3.6 && \
+    PYTHON_VERSION=3.9 && \
     mkdir -p /usr/local/lib/airflow-${AIRFLOW_VERSION} && \
     export AIRFLOW_HOME=/usr/local/lib/airflow-${AIRFLOW_VERSION} && \
     mkdir $AIRFLOW_HOME/dags && \
