@@ -9,31 +9,50 @@ RUN \
     yum install net-tools -y && \
     yum install vim-enhanced -y && \
     yum install wget -y && \
-    yum install openssh-server openssh-clients openssh-askpass -y
+    yum install openssh-server openssh-clients openssh-askpass -y && \
+    yum install gcc make openssl-devel bzip2-devel libffi-devel -y
 
 # Java installation
 RUN \
     yum install java-1.8.0-openjdk-devel.x86_64 -y
-ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.332.b09-1.el7_9.x86_64
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.352.b08-2.el7_9.x86_64
 ENV PATH=$PATH:$JAVA_HOME/bin
 
 # Python3 installation
 RUN \
-    yum install python3 -y
-ENV PYTHON_HOME=/usr/bin/python3
-ENV PYSPARK_PYTHON=$PYTHON_HOME
+    wget https://www.python.org/ftp/python/3.9.5/Python-3.9.5.tgz && \
+    tar -xvf Python-3.9.5.tgz && \
+    mv Python-3.9.5 /usr/local/lib/python-3.9.5 && \
+    cd /usr/local/lib/python-3.9.5 && \
+    ./configure --enable-optimizations && \
+    yum install make -y && \
+    make altinstall && \
+    ln -Tfs /usr/local/bin/python3.9 /usr/bin/python3 && \
+    python3 -m pip install --upgrade pip && \
+    pip install --upgrade setuptools && \
+    cd /
 
 # Hadoop installation
 RUN \
     mkdir -p /usr/local/lib && \
-    wget https://mirrors.sonic.net/apache/hadoop/common/hadoop-3.3.1/hadoop-3.3.1.tar.gz && \
-    tar xvzf hadoop-3.3.1.tar.gz && \
+    wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.4/hadoop-3.3.4.tar.gz && \
+    tar xvzf hadoop-3.3.4.tar.gz && \
     mv hadoop-3.3.4 /usr/local/lib/hadoop-3.3.4
 ENV HADOOP_HOME=/usr/local/lib/hadoop-3.3.4
 ENV PATH=$PATH:$HADOOP_HOME/bin
 ENV PATH=$PATH:$HADOOP_HOME/sbin
 
 # Hadoop env settings
+RUN \
+    echo \
+        $'export HADOOP_PID_DIR=/usr/local/lib/hadoop-3.3.4/pids \n\
+          export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.352.b08-2.el7_9.x86_64 \n\
+          export HDFS_NAMENODE_USER=\"root\" \n\
+          export HDFS_DATANODE_USER=\"root\" \n\
+          export HDFS_SECONDARYNAMENODE_USER=\"root\" \n\
+          export YARN_RESOURCEMANAGER_USER=\"root\" \n\
+          export YARN_NODEMANAGER_USER=\"root\" \n\
+          ' >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh
 ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 ENV HADOOP_PID_DIR=$HADOOP_HOME/pids
 ENV HDFS_NAMENODE_USER=root
@@ -45,15 +64,15 @@ ENV YARN_NODEMANAGER_USER=root
 
 # Zookeeper installation
 RUN \
-    wget https://mirror.navercorp.com/apache/zookeeper/zookeeper-3.6.3/apache-zookeeper-3.6.3-bin.tar.gz &&\
-    tar xvfz apache-zookeeper-3.6.3-bin.tar.gz && \
-    mv apache-zookeeper-3.6.3-bin /usr/local/lib/apache-zookeeper-3.6.3-bin && \
-    mkdir /usr/local/lib/apache-zookeeper-3.6.3-bin/data
-ENV ZOOKEEPER_HOME=/usr/local/lib/apache-zookeeper-3.6.3-bin
+    wget https://dlcdn.apache.org/zookeeper/zookeeper-3.7.1/apache-zookeeper-3.7.1-bin.tar.gz &&\
+    tar xvfz apache-zookeeper-3.7.1-bin.tar.gz && \
+    mv apache-zookeeper-3.7.1-bin /usr/local/lib/apache-zookeeper-3.7.1-bin && \
+    mkdir /usr/local/lib/apache-zookeeper-3.7.1-bin/data
+ENV ZOOKEEPER_HOME=/usr/local/lib/apache-zookeeper-3.7.1-bin
 ENV PATH=$PATH:$ZOOKEEPER_HOME/bin
 
 # Zookeeper env settings
-COPY lib/apache-zookeeper-3.6.3-bin/zoo.cfg $ZOOKEEPER_HOME/conf
+COPY lib/apache-zookeeper-3.7.1-bin/conf/zoo.cfg $ZOOKEEPER_HOME/conf
 
 # Hadoop-Zookeeper HA env settings
 COPY lib/hadoop-3.3.4/etc/hadoop/core-site.xml $HADOOP_CONF_DIR
@@ -87,32 +106,32 @@ RUN \
 ENV SPARK_HOME=/usr/local/lib/spark-3.3.1-bin-hadoop3
 ENV PATH=$PATH:$SPARK_HOME/bin
 
-#Spark env settings
+# Spark env settings
 COPY lib/spark-3.3.1-bin-hadoop3/conf/spark-defaults.conf $SPARK_HOME/conf/spark-defaults.conf
 COPY lib/spark-3.3.1-bin-hadoop3/conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
 
+# RabbitMQ installation
+RUN \
+    wget http://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm && \
+    rpm -Uvh erlang-solutions-1.0-1.noarch.rpm && \
+    yum install erlang logrotate socat -y && \
+    rpm -Uvh https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.9.12/rabbitmq-server-3.9.12-1.el7.noarch.rpm
+
 # Airflow installation
 RUN \
-    AIRFLOW_VERSION=2.0.0 && \
-    PYTHON_VERSION=3.6 && \
-    mkdir -p /usr/local/lib/airflow-${AIRFLOW_VERSION} && \
-    export AIRFLOW_HOME=/usr/local/lib/airflow-${AIRFLOW_VERSION} && \
-    mkdir $AIRFLOW_HOME/dags && \
-    mkdir $AIRFLOW_HOME/logs && \
-    mkdir $AIRFLOW_HOME/output && \
-    mkdir $AIRFLOW_HOME/conf && \
-    pip3 install --upgrade pip && \
-    pip install --upgrade setuptools &&\
-    pip install -U pip setuptools wheel && \
-    export SLUGIFY_USES_TEXT_UNIDECODE=yes && \
-    yum -y install epel-release gcc gcc-c++ glibc-core glibc-common mysql-devel python-devel python-setuptools python3-devel python3-pip openldap-devel && \
-    pip install pytz pyOpenSSL ndg-httpsclient mysqlclient celery flower apache-airflow==${AIRFLOW_VERSION} \
-                        --constraint https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt
-ENV AIRFLOW_HOME=/usr/local/lib/airflow-2.0.0
+    yum install mysql-devel sqlite-devel -y && \
+    pip install mysql-connector-python && \
+    pip install apache-airflow[mysql,celery]==2.5.0 && \
+    mkdir -p /usr/local/lib/apache-airflow-2.5.0/logs && \
+    mkdir -p /usr/local/lib/apache-airflow-2.5.0/dags && \
+    mkdir -p /usr/local/lib/apache-airflow-2.5.0/plugins && \
+    mkdir -p /usr/local/lib/apache-airflow-2.5.0/conf
+ENV AIRFLOW_HOME=/usr/local/lib/apache-airflow-2.5.0
 ENV AIRFLOW_CONFIG=$AIRFLOW_HOME/conf/airflow.cfg
+ENV DAGS_FOLDER=/usr/local/lib/apache-airflow-2.5.0/dags
 
 # Airflow env settings
-COPY lib/airflow-2.0.0/conf/airflow.cfg $AIRFLOW_HOME/conf
+COPY lib/apache-airflow-2.5.0/conf/airflow.cfg $AIRFLOW_HOME/conf
 
 ENTRYPOINT ["/bin/bash"]
 

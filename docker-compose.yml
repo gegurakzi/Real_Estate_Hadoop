@@ -4,18 +4,10 @@ services:
     image: cluster:node
     container_name: master01
     hostname: master01
-    deploy:
-      resources:
-        limits:
-          cpus: '0.20'
-          memory: 1536M
     volumes:
       - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
-        target: /usr/local/lib/airflow-2.0.0/dags
-      - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/logs
-        target: /usr/local/lib/airflow-2.0.0/logs
+        source: /home/malachai/hadoop-cluster/lib/apache-airflow-2.5.0/dags
+        target: /usr/local/lib/apache-airflow-2.5.0/dags
     networks:
       cluster-net:
         ipv4_address: 172.16.238.2
@@ -43,18 +35,10 @@ services:
     image: cluster:node
     container_name: master02
     hostname: master02
-    deploy:
-      resources:
-        limits:
-          cpus: '0.20'
-          memory: 1536M
     volumes:
       - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
-        target: /usr/local/lib/airflow-2.0.0/dags
-      - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/logs
-        target: /usr/local/lib/airflow-2.0.0/logs
+        source: /home/malachai/hadoop-cluster/lib/apache-airflow-2.5.0/dags
+        target: /usr/local/lib/apache-airflow-2.5.0/dags
     networks:
       cluster-net:
         ipv4_address: 172.16.238.3
@@ -82,36 +66,20 @@ services:
     image: cluster:node
     container_name: slave01
     hostname: slave01
-    deploy:
-      resources:
-        limits:
-          cpus: '0.20'
-          memory: 1536M
     volumes:
       - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
-        target: /usr/local/lib/airflow-2.0.0/dags
-      - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/logs
-        target: /usr/local/lib/airflow-2.0.0/logs
+        source: /home/malachai/hadoop-cluster/lib/apache-airflow-2.5.0/dags
+        target: /usr/local/lib/apache-airflow-2.5.0/dags
     networks:
       cluster-net:
         ipv4_address: 172.16.238.4
     ports:
       - "5082:5080"
       - "5557:5555"
-      - "4369:4369"
-      - "5671:5671"
       - "8044:8042"
       - "8795:8793"
-      - "5672:5672"
       - "9094:9092"
-      - "15672:15672"
-      - "25672:25672"
-      - "61613:61613"
-      - "61614:61614"
-      - "1883:1883"
-      - "8883:8883"
+      - "15674:15672"
     extra_hosts:
       - "master01:172.16.238.2"
       - "master02:172.16.238.3"
@@ -125,18 +93,10 @@ services:
     image: cluster:node
     container_name: slave02
     hostname: slave02
-    deploy:
-      resources:
-        limits:
-          cpus: '0.20'
-          memory: 1536M
     volumes:
       - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
-        target: /usr/local/lib/airflow-2.0.0/dags
-      - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/logs
-        target: /usr/local/lib/airflow-2.0.0/logs
+        source: /home/malachai/hadoop-cluster/lib/apache-airflow-2.5.0/dags
+        target: /usr/local/lib/apache-airflow-2.5.0/dags
     networks:
       cluster-net:
         ipv4_address: 172.16.238.5
@@ -156,18 +116,10 @@ services:
     image: cluster:node
     container_name: slave03
     hostname: slave03
-    deploy:
-      resources:
-        limits:
-          cpus: '0.20'
-          memory: 1536M
     volumes:
       - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/dags
-        target: /usr/local/lib/airflow-2.0.0/dags
-      - type: bind
-        source: /home/malachai/hadoop-cluster/lib/airflow-2.0.0/logs
-        target: /usr/local/lib/airflow-2.0.0/logs
+        source: /home/malachai/hadoop-cluster/lib/apache-airflow-2.5.0/dags
+        target: /usr/local/lib/apache-airflow-2.5.0/dags
     networks:
       cluster-net:
         ipv4_address: 172.16.238.6
@@ -190,7 +142,7 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 0107
+      MYSQL_ROOT_PASSWORD: root
     networks:
       cluster-net:
         ipv4_address: 172.16.238.7
