@@ -33,6 +33,7 @@ sudo docker exec -d slave01 sh -c "airflow celery worker > /usr/local/lib/apache
 sudo docker exec -d slave02 sh -c "airflow celery worker > /usr/local/lib/apache-airflow-2.5.0/logs/slave02-celery-worker.log" && \
 sudo docker exec -d slave03 sh -c "airflow celery worker > /usr/local/lib/apache-airflow-2.5.0/logs/slave03-celery-worker.log" && \
 sudo docker exec -d slave01 sh -c "airflow celery flower > /usr/local/lib/apache-airflow-2.5.0/logs/slave01-celery-flower.log" && \
+sudo docker exec -d slave01 sh -c "airflow scheduler > /usr/local/lib/apache-airflow-2.5.0/logs/slave01-scheduler.log" && \
 sudo docker exec -d slave01 sh -c "airflow webserver --port 5080 > /usr/local/lib/apache-airflow-2.5.0/logs/slave01-web-server.log" && \
 \
 sudo bash lib/apache-zookeeper-3.7.1-bin/sbin/deploy-myid.sh && \
