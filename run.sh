@@ -18,9 +18,10 @@ sudo docker exec metastore mysql -u root -p root -e "CREATE DATABASE hive;
 sudo docker exec slave01 /usr/sbin/rabbitmq-server -detached && \
 sleep 5 && \
 sudo docker exec slave01 rabbitmq-plugins enable rabbitmq_management && \
-sudo docker exec slave01 rabbitmqctl add_user airflow airflow && \
-sudo docker exec slave01 rabbitmqctl set_user_tags airflow administrator && \
-sudo docker exec slave01 rabbitmqctl set_permissions -p airflow ".*" ".*" ".*" && \
+sudo docker exec slave01 rabbitmqctl add_user airflow-user airflow-user && \
+sudo docker exec slave01 rabbitmqctl add_vhost airflow && \
+sudo docker exec slave01 rabbitmqctl set_user_tags airflow-user administrator && \
+sudo docker exec slave01 rabbitmqctl set_permissions -p airflow airflow-user ".*" ".*" ".*" && \
 \
 sudo docker exec master01 airflow db init && \
 sudo docker exec master01 airflow users create --username admin  --password admin \
