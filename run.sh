@@ -17,7 +17,7 @@ sudo docker exec -u root metastore mysql -u root -proot -e "
   GRANT ALL PRIVILEGES ON airflow.* TO 'airflow'@'%';"
 \
 sudo docker exec slave01 rabbitmq-plugins enable rabbitmq_management && \
-sudo docker exec slave01 /usr/sbin/rabbitmq-server -detached && \
+sudo docker exec slave01 /usr/sbin/rabbitmq-server start -detached && \
 sleep 5 && \
 sudo docker exec slave01 rabbitmqctl add_user airflow-user airflow-user && \
 sudo docker exec slave01 rabbitmqctl add_vhost airflow && \

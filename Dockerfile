@@ -115,7 +115,7 @@ RUN \
     wget http://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm && \
     rpm -Uvh erlang-solutions-1.0-1.noarch.rpm && \
     yum install erlang logrotate socat -y && \
-    rpm -Uvh https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.7.12/rabbitmq-server-3.7.12-1.el7.noarch.rpm
+    rpm -Uvh https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.9.12/rabbitmq-server-3.9.12-1.el7.noarch.rpm
 
 # Airflow installation
 RUN \
