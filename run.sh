@@ -10,8 +10,8 @@ sudo bash sbin/deploy-ssh-authorized-keys.sh && \
 \
 sudo docker exec metastore mysql -u root -p root -e "CREATE DATABASE hive;
   CREATE DATABASE airflow;
-  CREATE USER hive IDENTIFIED BY 'hive';
-  CREATE USER airflow IDENTIFIED BY 'airflow';
+  CREATE USER hive IDENTIFIED WITH mysql_native_password BY 'hive';
+  CREATE USER airflow IDENTIFIED WITH mysql_native_password BY 'airflow';
   GRANT ALL PRIVILEGES ON hive.* TO 'hive'@'%';
   GRANT ALL PRIVILEGES ON airflow.* TO 'airflow'@'%';"
 \
