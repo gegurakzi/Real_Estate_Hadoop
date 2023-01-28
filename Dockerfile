@@ -114,7 +114,7 @@ COPY lib/spark-3.3.1-bin-hadoop3/conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
 RUN \
     wget http://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm && \
     rpm -Uvh erlang-solutions-1.0-1.noarch.rpm && \
-    yum install erlang && \
+    yum install erlang -y && \
     rpm -Uvh https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.7.12/rabbitmq-server-3.7.12-1.el7.noarch.rpm
 
 # Airflow installation
