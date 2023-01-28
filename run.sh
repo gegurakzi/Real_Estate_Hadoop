@@ -27,13 +27,13 @@ sudo docker exec slave01 rabbitmqctl set_permissions -p airflow airflow-user ".*
 sudo docker exec master01 airflow db init && \
 sudo docker exec master01 airflow users create --username admin  --password admin \
   --firstname FIRST_NAME --lastname LAST_NAME --role Admin --email admin@example.org && \
-sudo docker exec master01 airflow celery worker && \
-sudo docker exec master02 airflow celery worker && \
-sudo docker exec slave01 airflow celery worker && \
-sudo docker exec slave02 airflow celery worker && \
-sudo docker exec slave03 airflow celery worker && \
-sudo docker exec slave01 airflow celery flower && \
-sudo docker exec -d slave01 sh -c "airflow webserver --port 5080 > /usr/local/lib/apache-airflow-2.5.0/logs/webserver.log" && \
+sudo docker exec -d master01 sh -c "airflow celery worker > /usr/local/lib/apache-airflow-2.5.0/logs/master01-celery-worker.log" && \
+sudo docker exec -d master02 sh -c "airflow celery worker > /usr/local/lib/apache-airflow-2.5.0/logs/master02-celery-worker.log" && \
+sudo docker exec -d slave01 sh -c "airflow celery worker > /usr/local/lib/apache-airflow-2.5.0/logs/slave01-celery-worker.log" && \
+sudo docker exec -d slave02 sh -c "airflow celery worker > /usr/local/lib/apache-airflow-2.5.0/logs/slave02-celery-worker.log" && \
+sudo docker exec -d slave03 sh -c "airflow celery worker > /usr/local/lib/apache-airflow-2.5.0/logs/slave03-celery-worker.log" && \
+sudo docker exec -d slave01 sh -c "airflow celery flower > /usr/local/lib/apache-airflow-2.5.0/logs/slave01-celery-flower.log" && \
+sudo docker exec -d slave01 sh -c "airflow webserver --port 5080 > /usr/local/lib/apache-airflow-2.5.0/logs/slave01-web-server.log" && \
 \
 sudo bash lib/apache-zookeeper-3.7.1-bin/sbin/deploy-myid.sh && \
 sudo docker exec master01 zkServer.sh start && \
