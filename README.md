@@ -49,7 +49,32 @@ GRANT ALL PRIVILEGES ON airflow.* TO 'airflow'@'%';
 quit;
 ```
 
-## 5. Hadoop HA 클러스터 시작
+## 5. RabbitMQ 사용자 정의
+```
+sudo service rabbitmq-server start
+sudo rabbitmq-plugins enable rabbitmq_management
+sudo rabbitmqctl add_user admin admin
+sudo rabbitmqctl set_user_tags admin administrator
+sudo rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
+```
+* 사용 포트: 4369, 5671, 5672, 15672 ,25672 ,61613 ,61614 ,1883 ,8883
+
+## 6. Airflow 시작
+```
+> airflow db init
+> airflow users create \
+--username admin \
+--password admin \
+--firstname FIRST_NAME \
+--lastname LAST_NAME \
+--role Admin \
+--email admin@example.org
+> airflow celery worker
+> airflow celery flower
+> airflow webserver --port 5080 -D &
+```
+
+## 7. Hadoop HA 클러스터 시작
 ```
 > sudo bash lib/apache-zookeeper-3.7.1-bin/sbin/deploy-myid.sh
 master01> zkServer.sh start
@@ -66,3 +91,4 @@ master01> zkServer.sh start
 [master01 ~]$ mapred --daemon start historyserver
 [master02 ~]$ mapred --daemon start historyserver
 ```
+
