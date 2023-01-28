@@ -15,7 +15,7 @@ sudo docker exec metastore mysql -u root -p root -e "CREATE DATABASE hive;
   GRANT ALL PRIVILEGES ON hive.* TO 'hive'@'%';
   GRANT ALL PRIVILEGES ON airflow.* TO 'airflow'@'%';"
 \
-sudo docker exec slave01 sh -c "service rabbitmq-server start" && \
+sudo docker exec slave01 /usr/sbin/rabbitmq-server -detached && \
 sudo docker exec slave01 rabbitmq-plugins enable rabbitmq_management && \
 sudo docker exec slave01 rabbitmqctl add_user airflow airflow && \
 sudo docker exec slave01 rabbitmqctl set_user_tags airflow administrator && \
