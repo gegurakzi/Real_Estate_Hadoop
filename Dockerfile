@@ -120,7 +120,7 @@ RUN \
 # Airflow installation
 RUN \
     yum install mysql-devel sqlite-devel -y && \
-    pip install pymysql && \
+    pip install mysql-connector-python && \
     pip install apache-airflow[mysql,celery]==2.5.0 && \
     mkdir -p /usr/local/lib/apache-airflow-2.5.0/logs && \
     mkdir -p /usr/local/lib/apache-airflow-2.5.0/dags && \
