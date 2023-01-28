@@ -106,15 +106,21 @@ RUN \
 ENV SPARK_HOME=/usr/local/lib/spark-3.3.1-bin-hadoop3
 ENV PATH=$PATH:$SPARK_HOME/bin
 
-#Spark env settings
+# Spark env settings
 COPY lib/spark-3.3.1-bin-hadoop3/conf/spark-defaults.conf $SPARK_HOME/conf/spark-defaults.conf
 COPY lib/spark-3.3.1-bin-hadoop3/conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
 
-# Airflow installation
+# RabbitMQ installation
+RUN \
+    wget http://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm && \
+    rpm -Uvh erlang-solutions-1.0-1.noarch.rpm && \
+    yum install erlang logrotate socat -y && \
+    rpm -Uvh https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.9.12/rabbitmq-server-3.9.12-1.el7.noarch.rpm
 
+# Airflow installation
 RUN \
     yum install mysql-devel sqlite-devel -y && \
-    pip install pymysql && \
+    pip install mysql-connector-python && \
     pip install apache-airflow[mysql,celery]==2.5.0 && \
     mkdir -p /usr/local/lib/apache-airflow-2.5.0/logs && \
     mkdir -p /usr/local/lib/apache-airflow-2.5.0/dags && \
@@ -122,6 +128,7 @@ RUN \
     mkdir -p /usr/local/lib/apache-airflow-2.5.0/conf
 ENV AIRFLOW_HOME=/usr/local/lib/apache-airflow-2.5.0
 ENV AIRFLOW_CONFIG=$AIRFLOW_HOME/conf/airflow.cfg
+ENV DAGS_FOLDER=/usr/local/lib/apache-airflow-2.5.0/dags
 
 # Airflow env settings
 COPY lib/apache-airflow-2.5.0/conf/airflow.cfg $AIRFLOW_HOME/conf
