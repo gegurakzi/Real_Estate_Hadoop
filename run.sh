@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+sudo docker-compose down
+
 sudo docker build -t cluster:node .
 sudo docker-compose up -d
 
