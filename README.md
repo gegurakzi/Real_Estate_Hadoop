@@ -14,8 +14,9 @@ Resource Manager Web: 8088(master01) 8089(master02)
 MapReduce JobHistory Web: 19888(master01) 19889(master02)
 Spark Application Manager Web(4040 4041 -> redirect to YARN Resource Manager/Spark Application): 8088/app_id#(master01) 8089/app_id#(master02)
 Spark History Web: 18080(master01) 18081(master02)
-Airflow WebServer: 5082(default: 8080)
-RabbitMQ Server: 15672 Flower UI(web management for Airflow celery workers): 5555
+Airflow WebServer: 5082:5080(default: 8080)
+RabbitMQ Server: 15674:15672
+Flower UI(web management for Airflow celery workers): 5557:5555
 ```
 
 
