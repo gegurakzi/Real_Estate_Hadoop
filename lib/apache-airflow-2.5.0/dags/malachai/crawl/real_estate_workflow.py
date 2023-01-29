@@ -47,5 +47,4 @@ def real_estate_workflow():
         put = Popen(["hadoop", "fs", "-put", file_name, hdfs_path], stdin=PIPE, bufsize=-1)
         put.communicate()
 
-
-
+real_estate_workflow()
