@@ -133,5 +133,9 @@ ENV DAGS_FOLDER=/usr/local/lib/apache-airflow-2.5.0/dags
 # Airflow env settings
 COPY lib/apache-airflow-2.5.0/conf/airflow.cfg $AIRFLOW_HOME/conf
 
+# Python packages for Airflow DAGs
+RUN \
+    pip install pandas
+
 ENTRYPOINT ["/bin/bash"]
 

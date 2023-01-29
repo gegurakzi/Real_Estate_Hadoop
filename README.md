@@ -87,8 +87,8 @@ quit;
 [master02]> hdfs --daemon start journalnode
 [slave01]> hdfs --daemon start journalnode
 [master01]> hdfs namenode -format
-[master01]> start-dfs.sh
 [master02]> hdfs namenode -bootstrapStandby
+[master01]> start-dfs.sh
 [master01]> start-yarn.sh
 [master01]> mapred --daemon start historyserver
 [master02]> mapred --daemon start historyserver
