@@ -129,6 +129,7 @@ RUN \
 ENV AIRFLOW_HOME=/usr/local/lib/apache-airflow-2.5.0
 ENV AIRFLOW_CONFIG=$AIRFLOW_HOME/conf/airflow.cfg
 ENV DAGS_FOLDER=/usr/local/lib/apache-airflow-2.5.0/dags
+ENV PYTHONPATH=$PYTHONPATH:$AIRFLOW_HOME/dags/lib
 
 # Airflow env settings
 COPY lib/apache-airflow-2.5.0/conf/airflow.cfg $AIRFLOW_HOME/conf
