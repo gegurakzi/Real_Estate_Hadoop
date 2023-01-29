@@ -16,10 +16,10 @@ from lib.extract.real_estate_csv import csv_to_hdfs
 )
 def real_estate_workflow(deal_ymd):
 
-    task1 = PythonOperator(
+    t1 = PythonOperator(
         task_id="task1_id",
-        python_callable=csv_to_hdfs(deal_ymd),
-        dag=dag
+        python_callable=csv_to_hdfs(deal_ymd)
     )
+
 
 real_estate_workflow_dag = real_estate_workflow("20220130")
