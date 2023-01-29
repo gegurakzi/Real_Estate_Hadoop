@@ -14,12 +14,12 @@ from lib.extract.real_estate_csv import csv_to_hdfs
     catchup=False,
     tags=["extract"],
 )
-def real_estate_workflow(deal_ymd):
+def real_estate_workflow():
 
     t1 = PythonOperator(
         task_id="task1_id",
-        python_callable=csv_to_hdfs(deal_ymd)
+        python_callable=csv_to_hdfs("20220130")
     )
 
 
-real_estate_workflow_dag = real_estate_workflow("20220130")
+real_estate_workflow_dag = real_estate_workflow()
