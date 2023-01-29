@@ -6,7 +6,7 @@ import pendulum
 from airflow.decorators import dag
 from airflow.operators.python import PythonOperator
 
-from lib.extract.real_estate_csv import get_dataframe
+from lib.extract.real_estate_csv import csv_to_hdfs
 
 @dag(
     schedule=None,
@@ -18,7 +18,7 @@ def real_estate_workflow(deal_ymd):
 
     task1 = PythonOperator(
         task_id="task1_id",
-        python_callable=get_dataframe(deal_ymd),
+        python_callable=csv_to_hdfs(deal_ymd),
         dag=dag
     )
 

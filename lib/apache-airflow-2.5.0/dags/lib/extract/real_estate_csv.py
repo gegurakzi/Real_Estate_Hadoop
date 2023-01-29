@@ -5,7 +5,7 @@ import pandas as pd
 import requests
 from subprocess import PIPE, Popen
 
-def get_dataframe(deal_ymd, **context):
+def csv_to_hdfs(deal_ymd, **context):
 
     data_url = "https://datafile.seoul.go.kr/bigfile/iot/sheet/csv/download.do"
     form = {
