@@ -5,7 +5,7 @@ import pandas as pd
 import requests
 from subprocess import PIPE, Popen
 
-def csv_to_hdfs(deal_ymd, **context):
+def real_estate_csv_to_hdfs(deal_ymd, **context):
 
     data_url = "https://datafile.seoul.go.kr/bigfile/iot/sheet/csv/download.do"
     form = {
@@ -25,8 +25,8 @@ def csv_to_hdfs(deal_ymd, **context):
     df = pd.read_csv(data, sep=",", header=None)
 
     file_name = "DEAL_YMD-" + deal_ymd + "-" + \
-                pendulum.now().date().replace('-', '') + "-" + \
-                pendulum.now().time() + '.csv'
+                str(pendulum.now().date()).replace('-', '') + "-" + \
+                str(pendulum.now().time()) + '.csv'
     hdfs_path = "/data/" + "DEAL_YMD-" + deal_ymd
 
     df.to_csv(file_name, encoding='utf-8')
