@@ -1,11 +1,6 @@
-import sys
-
-
 import pendulum
 
-from airflow.decorators import dag
-from airflow.operators.python import PythonOperator
-
+from airflow.decorators import dag, task
 from lib.extract.real_estate_csv import real_estate_csv_to_hdfs
 
 @dag(
@@ -17,10 +12,13 @@ from lib.extract.real_estate_csv import real_estate_csv_to_hdfs
 )
 def real_estate_workflow():
 
-    t1 = PythonOperator(
-        task_id="task1_id",
-        python_callable=real_estate_csv_to_hdfs("20220130")
-    )
+    @task()
+    def extract():
+        return real_estate_csv_to_hdfs("20220130")
 
-
+    @task()
+    def transform(foo):
+        print(foo)
+    res = extract()
+    transform(res)
 real_estate_workflow_dag = real_estate_workflow()

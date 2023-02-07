@@ -36,3 +36,5 @@ def real_estate_csv_to_hdfs(deal_ymd, **context):
 
     put = Popen(["hadoop", "fs", "-put", file_name, hdfs_path], stdin=PIPE, bufsize=-1)
     put.communicate()
+
+    return hdfs_path

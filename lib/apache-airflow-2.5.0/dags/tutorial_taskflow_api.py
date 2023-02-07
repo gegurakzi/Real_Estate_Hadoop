@@ -4,7 +4,7 @@ import pendulum
 
 from airflow.decorators import dag, task
 
-from lib.extract.real_estate_csv import csv_to_hdfs
+from lib.extract.real_estate_csv import real_estate_csv_to_hdfs
 
 @dag(
     schedule=None,
@@ -31,7 +31,7 @@ def tutorial_taskflow_api():
         """
         data_string = '{"1001": 301.27, "1002": 433.21, "1003": 502.22}'
 
-        what = csv_to_hdfs("20220130")
+        what = real_estate_csv_to_hdfs("20220130")
 
         order_data_dict = json.loads(data_string)
         return order_data_dict
