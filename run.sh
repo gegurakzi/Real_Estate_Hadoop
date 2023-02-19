@@ -51,4 +51,6 @@ sudo docker exec master02 sh -c "hdfs namenode -bootstrapStandby" && \
 \
 sudo docker exec master01 sh -c "start-yarn.sh" && \
 sudo docker exec master01 sh -c "mapred --daemon start historyserver" && \
-sudo docker exec master02 sh -c "mapred --daemon start historyserver"
+sudo docker exec master02 sh -c "mapred --daemon start historyserver" && \
+\
+sudo docker exec master01 schematool -initSchema -dbType mysql

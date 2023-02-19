@@ -1,11 +1,11 @@
 <configuration>
         <property>
                 <name>javax.jdo.option.ConnectionURL</name>
-                <value>jdbc:mysql:/metastore:3306/hive?allowPublicKeyRetrieval=true&amp;useSSL=false&amp;createDatabaseIfNotExist=true&amp;useSSL=false&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC</value>
+                <value>jdbc:mysql://metastore:3306/hive?allowPublicKeyRetrieval=true&amp;useSSL=false&amp;createDatabaseIfNotExist=true&amp;useSSL=false&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC</value>
         </property>
         <property>
                 <name>javax.jdo.option.ConnectionDriverName</name>
-                <value>com.mysql.jdbc.Driver</value>
+                <value>com.mysql.cj.jdbc.Driver</value>
         </property>
         <property>
                 <name>javax.jdo.option.ConnectionUserName</name>
@@ -17,6 +17,6 @@
         </property>
         <property>
                 <name>hive.metastore.schema.verfication</name>
-                <value>false</value>
+                <value>true</value>
         </property>
 </configuration>

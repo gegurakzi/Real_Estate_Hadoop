@@ -17,24 +17,30 @@ def real_estate_csv_to_hdfs(deal_ymd, **context):
         "filterCol": "DEAL_YMD",
         "txtFilter": deal_ymd
     }
-
+    print("Request sent, waiting...")
     r = requests.post(data_url, data=form)
+    print("Response recieved")
 
     string_data = r.content.decode('euc-kr')
     data = StringIO(string_data)
     df = pd.read_csv(data, sep=",", header=None)
 
+    file_path = "/home"
     file_name = "DEAL_YMD-" + deal_ymd + "-" + \
                 str(pendulum.now().date()).replace('-', '') + "-" + \
-                str(pendulum.now().time()) + '.csv'
-    hdfs_path = "/data/" + "DEAL_YMD-" + deal_ymd
+                str(pendulum.now().time()).replace(':', '') + '.csv'
+    file_full = file_path + '/' + file_name
+    hdfs_path = "/user/airflow/data/" + "DEAL_YMD-" + deal_ymd
 
-    df.to_csv(file_name, encoding='utf-8')
+    df.to_csv(file_full, encoding='utf-8')
 
-    put = Popen(["hadoop", "fs", "-mkdir", hdfs_path], stdin=PIPE, bufsize=-1)
+    mkdir = Popen(["hadoop", "fs", "-mkdir", "-p", hdfs_path], stdin=PIPE, bufsize=-1)
+    mkdir.communicate()
+
+    put = Popen(["hadoop", "fs", "-put", file_full, hdfs_path], stdin=PIPE, bufsize=-1)
     put.communicate()
 
-    put = Popen(["hadoop", "fs", "-put", file_name, hdfs_path], stdin=PIPE, bufsize=-1)
-    put.communicate()
+    rm = Popen(["rm", file_full], stdin=PIPE, bufsize=-1)
+    rm.communicate()
 
     return hdfs_path
