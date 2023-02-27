@@ -84,7 +84,7 @@ with DAG(
             ROW FORMAT DELIMITED
             FIELDS TERMINATED BY ','
             STORED AS TEXTFILE
-            LOCATION 'hdfs:///user/hive/warehouse/DEAL_YMD-20220127'
+            LOCATION 'hdfs:///user/airflow/data/DEAL_YMD-20220127'
             TBLPROPERTIES ('skip.header.line.count'='1');
             """,
         hive_cli_conn_id = "hive_cli_real_estate",
