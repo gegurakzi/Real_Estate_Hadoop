@@ -142,10 +142,14 @@ ENV PYTHONPATH=$PYTHONPATH:$AIRFLOW_HOME/dags/lib
 
 # Airflow env settings
 COPY lib/apache-airflow-2.5.0/conf/airflow.cfg $AIRFLOW_HOME/conf
+ENV AIRFLOW_CONN_HIVE_CLI_DEFAULT=jdbc:hive2://hive:hive@localhost:10000/real_estate
 
 # Python packages for Airflow DAGs
 RUN \
-    pip install pandas
+    yum update -y && \
+    pip install pandas && \
+    yum install build-essential gcc-c++ python39-devel cyrus-sasl cyrus-sasl-devel -y && \
+    pip install apache-airflow-providers-apache-hive
 
 ENTRYPOINT ["/bin/bash"]
 

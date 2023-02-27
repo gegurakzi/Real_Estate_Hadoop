@@ -6,7 +6,7 @@ services:
     hostname: master01
     volumes:
       - type: bind
-        source: /home/malachai/Workspace/hadoop-cluster/lib/apache-airflow-2.5.0/dags
+        source: /home/ssafy/Workspace/hadoop-cluster/lib/apache-airflow-2.5.0/dags
         target: /usr/local/lib/apache-airflow-2.5.0/dags
     networks:
       cluster-net:
@@ -19,6 +19,7 @@ services:
       - "9092:9092"
       - "50070:50070"
       - "19888:19888"
+      - "10000:10000"
       - "18080:18080"
       - "4040:4040"
       - "8090:8090"
@@ -37,7 +38,7 @@ services:
     hostname: master02
     volumes:
       - type: bind
-        source: /home/malachai/Workspace//hadoop-cluster/lib/apache-airflow-2.5.0/dags
+        source: /home/ssafy/Workspace/hadoop-cluster/lib/apache-airflow-2.5.0/dags
         target: /usr/local/lib/apache-airflow-2.5.0/dags
     networks:
       cluster-net:
@@ -68,7 +69,7 @@ services:
     hostname: slave01
     volumes:
       - type: bind
-        source: /home/malachai/Workspace//hadoop-cluster/lib/apache-airflow-2.5.0/dags
+        source: /home/ssafy/Workspace/hadoop-cluster/lib/apache-airflow-2.5.0/dags
         target: /usr/local/lib/apache-airflow-2.5.0/dags
     networks:
       cluster-net:
@@ -95,7 +96,7 @@ services:
     hostname: slave02
     volumes:
       - type: bind
-        source: /home/malachai/Workspace//hadoop-cluster/lib/apache-airflow-2.5.0/dags
+        source: /home/ssafy/Workspace/hadoop-cluster/lib/apache-airflow-2.5.0/dags
         target: /usr/local/lib/apache-airflow-2.5.0/dags
     networks:
       cluster-net:
@@ -118,7 +119,7 @@ services:
     hostname: slave03
     volumes:
       - type: bind
-        source: /home/malachai/Workspace//hadoop-cluster/lib/apache-airflow-2.5.0/dags
+        source: /home/ssafy/Workspace/hadoop-cluster/lib/apache-airflow-2.5.0/dags
         target: /usr/local/lib/apache-airflow-2.5.0/dags
     networks:
       cluster-net:
