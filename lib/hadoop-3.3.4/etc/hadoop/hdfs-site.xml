@@ -29,11 +29,11 @@
         </property>
         <property>
                 <name>dfs.namenode.http-address.hadoop-cluster.nn01</name>
-                <value>master01:50070</value>
+                <value>master01:9870</value>
         </property>
         <property>
                 <name>dfs.namenode.http-address.hadoop-cluster.nn02</name>
-                <value>master02:50070</value>
+                <value>master02:9870</value>
         </property>
         <property>
                 <name>dfs.namenode.shared.edits.dir</name>

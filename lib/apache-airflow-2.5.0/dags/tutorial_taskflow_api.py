@@ -3,6 +3,9 @@ import json
 import pendulum
 
 from airflow.decorators import dag, task
+
+from lib.extract.real_estate_csv import real_estate_csv_to_hdfs
+
 @dag(
     schedule=None,
     start_date=pendulum.datetime(2021, 1, 1, tz="UTC"),
@@ -27,6 +30,8 @@ def tutorial_taskflow_api():
         hardcoded JSON string.
         """
         data_string = '{"1001": 301.27, "1002": 433.21, "1003": 502.22}'
+
+        what = real_estate_csv_to_hdfs("20220130")
 
         order_data_dict = json.loads(data_string)
         return order_data_dict

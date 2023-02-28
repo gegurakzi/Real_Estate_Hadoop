@@ -14,8 +14,12 @@ RUN \
 
 # Java installation
 RUN \
-    yum install java-1.8.0-openjdk-devel.x86_64 -y
-ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.352.b08-2.el7_9.x86_64
+    mkdir -p /usr/lib/jvm && \
+    wget https://github.com/AdoptOpenJDK/openjdk8-upstream-binaries/releases/download/jdk8u342-b07/OpenJDK8U-jdk_x64_linux_8u342b07.tar.gz && \
+    tar -xvf OpenJDK8U-jdk_x64_linux_8u342b07.tar.gz && \
+    mv openjdk-8u342-b07 /usr/lib/jvm/java-1.8.0-openjdk-8u342-b07 && \
+    mkdir -p $JAVA_HOME/lib/ext
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-8u342-b07
 ENV PATH=$PATH:$JAVA_HOME/bin
 
 # Python3 installation
@@ -46,7 +50,8 @@ ENV PATH=$PATH:$HADOOP_HOME/sbin
 RUN \
     echo \
         $'export HADOOP_PID_DIR=/usr/local/lib/hadoop-3.3.4/pids \n\
-          export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.352.b08-2.el7_9.x86_64 \n\
+          export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-8u342-b07 \n\
+          export CLASSPATH=$JAVA_HOME/lib:$JAVA_HOME/lib/ext:$JAVA_HOME/jre/lib:$JAVA_HOME/jre/lib/ext \n\
           export HDFS_NAMENODE_USER=\"root\" \n\
           export HDFS_DATANODE_USER=\"root\" \n\
           export HDFS_SECONDARYNAMENODE_USER=\"root\" \n\
@@ -93,6 +98,10 @@ ENV HIVE_HOME=/usr/local/lib/apache-hive-3.1.3-bin
 ENV PATH=$PATH:$HIVE_HOME/bin
 
 # Hive env settings
+RUN \
+    wget https://cdn.mysql.com//Downloads/Connector-J/mysql-connector-j-8.0.32.tar.gz &&\
+    tar -xvf mysql-connector-j-8.0.32.tar.gz && \
+    mv mysql-connector-j-8.0.32/mysql-connector-j-8.0.32.jar $JAVA_HOME/jre/lib/ext
 COPY lib/apache-hive-3.1.3-bin/conf/hive-site.xml $HIVE_HOME/conf
 
 RUN \
@@ -100,15 +109,15 @@ RUN \
 
 # Spark installation
 RUN \
-    wget https://dlcdn.apache.org/spark/spark-3.3.1/spark-3.3.1-bin-hadoop3.tgz && \
-    tar -xzf spark-3.3.1-bin-hadoop3.tgz && \
-    mv spark-3.3.1-bin-hadoop3 /usr/local/lib/spark-3.3.1-bin-hadoop3
-ENV SPARK_HOME=/usr/local/lib/spark-3.3.1-bin-hadoop3
+    wget https://dlcdn.apache.org/spark/spark-3.3.2/spark-3.3.2-bin-hadoop3.tgz && \
+    tar -xzf spark-3.3.2-bin-hadoop3.tgz && \
+    mv spark-3.3.2-bin-hadoop3 /usr/local/lib/spark-3.3.2-bin-hadoop3
+ENV SPARK_HOME=/usr/local/lib/spark-3.3.2-bin-hadoop3
 ENV PATH=$PATH:$SPARK_HOME/bin
 
 # Spark env settings
-COPY lib/spark-3.3.1-bin-hadoop3/conf/spark-defaults.conf $SPARK_HOME/conf/spark-defaults.conf
-COPY lib/spark-3.3.1-bin-hadoop3/conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
+COPY lib/spark-3.3.2-bin-hadoop3/conf/spark-defaults.conf $SPARK_HOME/conf/spark-defaults.conf
+COPY lib/spark-3.3.2-bin-hadoop3/conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
 
 # RabbitMQ installation
 RUN \
@@ -129,9 +138,18 @@ RUN \
 ENV AIRFLOW_HOME=/usr/local/lib/apache-airflow-2.5.0
 ENV AIRFLOW_CONFIG=$AIRFLOW_HOME/conf/airflow.cfg
 ENV DAGS_FOLDER=/usr/local/lib/apache-airflow-2.5.0/dags
+ENV PYTHONPATH=$PYTHONPATH:$AIRFLOW_HOME/dags/lib
 
 # Airflow env settings
 COPY lib/apache-airflow-2.5.0/conf/airflow.cfg $AIRFLOW_HOME/conf
+ENV AIRFLOW_CONN_HIVE_CLI_DEFAULT=jdbc:hive2://hive:hive@localhost:10000/real_estate
+
+# Python packages for Airflow DAGs
+RUN \
+    yum update -y && \
+    pip install pandas && \
+    yum install build-essential gcc-c++ python39-devel cyrus-sasl cyrus-sasl-devel -y && \
+    pip install apache-airflow-providers-apache-hive
 
 ENTRYPOINT ["/bin/bash"]
 

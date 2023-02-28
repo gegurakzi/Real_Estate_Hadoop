@@ -87,10 +87,28 @@ quit;
 [master02]> hdfs --daemon start journalnode
 [slave01]> hdfs --daemon start journalnode
 [master01]> hdfs namenode -format
-[master01]> start-dfs.sh
 [master02]> hdfs namenode -bootstrapStandby
+[master01]> start-dfs.sh
 [master01]> start-yarn.sh
 [master01]> mapred --daemon start historyserver
 [master02]> mapred --daemon start historyserver
 ```
 
+## 8. Hive 기본 스키마 생성 및 Hiveserver2 시작
+```
+[master01]> hive
+hive>>> CREATE SCHEMA IF NOT EXISTS real_estate;
+[master01]> hiveserver2
+```
+
+## 9. Airflow HiveServer2 Connection 설정
+```
+Connection Id: hive_cli_real_estate
+Connection Type: Hive Client Wrapper
+Host: master01
+Schema: real_estate
+Login: hive
+Password: hive
+Port: 10000
+Extra: {"use_beeline": false, "auth": ""}
+```

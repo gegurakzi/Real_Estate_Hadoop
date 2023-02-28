@@ -45,10 +45,12 @@ sudo docker exec master01 hdfs --daemon start journalnode && \
 sudo docker exec master02 hdfs --daemon start journalnode && \
 sudo docker exec slave01 hdfs --daemon start journalnode && \
 \
-sudo docker exec master01 hdfs namenode -format && \
-sudo docker exec master01 start-dfs.sh && \
-sudo docker exec master02 hdfs namenode -bootstrapStandby && \
+sudo docker exec master01 sh -c "hdfs namenode -format" && \
+sudo docker exec master01 sh -c "start-dfs.sh" && \
+sudo docker exec master02 sh -c "hdfs namenode -bootstrapStandby" && \
 \
-sudo docker exec master01 start-yarn.sh && \
-sudo docker exec master01 mapred --daemon start historyserver && \
-sudo docker exec master02 mapred --daemon start historyserver
+sudo docker exec master01 sh -c "start-yarn.sh" && \
+sudo docker exec master01 sh -c "mapred --daemon start historyserver" && \
+sudo docker exec master02 sh -c "mapred --daemon start historyserver" && \
+\
+sudo docker exec master01 schematool -initSchema -dbType mysql
