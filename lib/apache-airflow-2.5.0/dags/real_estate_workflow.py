@@ -63,6 +63,7 @@ with DAG(
             jibun_primary INT,
             jibun_secondary INT,
             building_name STRING,
+            deal_date INT,
             deal_price INT,
             building_area DOUBLE,
             area DOUBLE,
@@ -80,11 +81,30 @@ with DAG(
         LOCATION 'hdfs://{filepath}'
         TBLPROPERTIES ('skip.header.line.count'='1');
         """
-
     def load_on_real_estate_table_operation_hql() -> str:
         return f"""
         INSERT OVERWRITE TABLE real_estate.{INTERNAL_TABLE_ID} PARTITION ( deal_date={dealymd} )
-        SELECT * FROM real_estate.{EXTERNAL_TABLE_ID};
+        SELECT seq,
+            reg_year,
+            gu_code,
+            gu_name,
+            dong_code,
+            dong_name,
+            jibun_type,
+            jibun_name,
+            jibun_primary,
+            jibun_secondary,
+            building_name,
+            deal_price,
+            building_area,
+            area,
+            deal_floor,
+            right_type,
+            deal_cancel,
+            building_year,
+            building_usage,
+            deal_type,
+            deal_relator FROM real_estate.{EXTERNAL_TABLE_ID};
         """
 
     @task(task_id="extract_csv_file")
