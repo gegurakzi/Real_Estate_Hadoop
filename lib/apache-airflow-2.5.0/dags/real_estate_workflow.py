@@ -12,13 +12,16 @@ with DAG(
         catchup=False,
         tags=["extract"],
 ) as dag:
-
     dealymd = "20220128"
 
     INTERNAL_TABLE_ID = "trade"
     EXTERNAL_TABLE_ID = "trade_external_db"
+
+
     def hive_cli_connection_id() -> str:
         return "hive_cli_real_estate"
+
+
     def create_internal_real_estate_table_operation_hql() -> str:
         return f"""
         CREATE TABLE IF NOT EXISTS real_estate.{INTERNAL_TABLE_ID}(
@@ -48,6 +51,8 @@ with DAG(
         STORED AS ORC
         LOCATION 'hdfs:///user/hive/warehouse';
         """
+
+
     def load_external_real_estate_table_operation_hql(filepath: str) -> str:
         return f"""
         DROP TABLE IF EXISTS real_estate.{EXTERNAL_TABLE_ID};
@@ -81,6 +86,8 @@ with DAG(
         LOCATION 'hdfs://{filepath}'
         TBLPROPERTIES ('skip.header.line.count'='1');
         """
+
+
     def load_on_real_estate_table_operation_hql() -> str:
         return f"""
         INSERT OVERWRITE TABLE real_estate.{INTERNAL_TABLE_ID} PARTITION ( deal_date={dealymd} )
@@ -106,6 +113,7 @@ with DAG(
             deal_type,
             deal_relator FROM real_estate.{EXTERNAL_TABLE_ID};
         """
+
 
     @task(task_id="extract_csv_file")
     def extract(deal_ymd: str) -> str:

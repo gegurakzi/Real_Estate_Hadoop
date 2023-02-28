@@ -10,6 +10,7 @@ pyhive[hive]>=0.6.0
 sasl>=0.3.1; python_version>="3.9"
 thrift>=0.9.2
 
+apt install build-essential
 apt install python3-dev
 apt install libsasl2-dev
 ```

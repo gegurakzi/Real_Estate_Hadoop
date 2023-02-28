@@ -23,7 +23,7 @@ def real_estate_csv_to_hdfs(deal_ymd, **context):
 
     string_data = r.content.decode('euc-kr')
     data = StringIO(string_data)
-    df = pd.read_csv(data, sep=",", header=None)
+    df = pd.read_csv(data, sep=",", skiprows=1)
 
     file_path = "/home"
     file_name = "DEAL_YMD-" + deal_ymd + "-" + \

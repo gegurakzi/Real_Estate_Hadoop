@@ -6,23 +6,23 @@ services:
     hostname: master01
     volumes:
       - type: bind
-        source: /home/ssafy/Workspace/hadoop-cluster/lib/apache-airflow-2.5.0/dags
+        source: /home/malachai/Workspace/hadoop-cluster/lib/apache-airflow-2.5.0/dags
         target: /usr/local/lib/apache-airflow-2.5.0/dags
     networks:
       cluster-net:
         ipv4_address: 172.16.238.2
     ports:
-      - "9870:9870"
-      - "8088:8088"
-      - "8042:8042"
-      - "8793:8793"
-      - "9092:9092"
-      - "50070:50070"
-      - "19888:19888"
-      - "10000:10000"
-      - "18080:18080"
-      - "4040:4040"
-      - "8090:8090"
+      - "9870:9870" # Namenode Web UI
+      - "8088:8088" # ResourceManager WEB UI
+      - "8042:8042" # NodeManager WEWB UI
+      - "8793:8793" # Airflow Celery Worker log server
+      - "9092:9092" # Zookeeper broker
+      - "19888:19888" # Job History server
+      - "10000:10000" # HiveServer2
+      - "10002:10002" # HiveServer2 Web UI
+      - "18080:18080" # Spark Job History server
+      - "4040:4040" # Spark Executer Web UI
+      - "8090:8090" # YARN Web Proxy
     extra_hosts:
       - "master02:172.16.238.3"
       - "slave01:172.16.238.4"
@@ -38,7 +38,7 @@ services:
     hostname: master02
     volumes:
       - type: bind
-        source: /home/ssafy/Workspace/hadoop-cluster/lib/apache-airflow-2.5.0/dags
+        source: /home/malachai/Workspace/hadoop-cluster/lib/apache-airflow-2.5.0/dags
         target: /usr/local/lib/apache-airflow-2.5.0/dags
     networks:
       cluster-net:
@@ -49,7 +49,6 @@ services:
       - "8794:8793"
       - "8043:8042"
       - "9093:9092"
-      - "50071:50070"
       - "19889:19888"
       - "18081:18081"
       - "4041:4040"
@@ -69,18 +68,18 @@ services:
     hostname: slave01
     volumes:
       - type: bind
-        source: /home/ssafy/Workspace/hadoop-cluster/lib/apache-airflow-2.5.0/dags
+        source: /home/malachai/Workspace/hadoop-cluster/lib/apache-airflow-2.5.0/dags
         target: /usr/local/lib/apache-airflow-2.5.0/dags
     networks:
       cluster-net:
         ipv4_address: 172.16.238.4
     ports:
-      - "5082:5080"
-      - "5557:5555"
+      - "5082:5080" # Airflow Web UI
+      - "5557:5555" # Flower Web UI
       - "8044:8042"
       - "8795:8793"
       - "9094:9092"
-      - "15674:15672"
+      - "15674:15672" # RabbitMQ Web UI
     extra_hosts:
       - "master01:172.16.238.2"
       - "master02:172.16.238.3"
@@ -96,7 +95,7 @@ services:
     hostname: slave02
     volumes:
       - type: bind
-        source: /home/ssafy/Workspace/hadoop-cluster/lib/apache-airflow-2.5.0/dags
+        source: /home/malachai/Workspace/hadoop-cluster/lib/apache-airflow-2.5.0/dags
         target: /usr/local/lib/apache-airflow-2.5.0/dags
     networks:
       cluster-net:
@@ -119,7 +118,7 @@ services:
     hostname: slave03
     volumes:
       - type: bind
-        source: /home/ssafy/Workspace/hadoop-cluster/lib/apache-airflow-2.5.0/dags
+        source: /home/malachai/Workspace/hadoop-cluster/lib/apache-airflow-2.5.0/dags
         target: /usr/local/lib/apache-airflow-2.5.0/dags
     networks:
       cluster-net:
