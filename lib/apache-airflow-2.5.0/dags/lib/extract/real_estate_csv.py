@@ -37,7 +37,7 @@ def real_estate_csv_to_hdfs(deal_ymd, **context):
     mkdir = Popen(["hadoop", "fs", "-mkdir", "-p", hdfs_path+"/history"], stdin=PIPE, bufsize=-1)
     mkdir.communicate()
 
-    mv = Popen(["hadoop", "fs", "-mv", hdfs_path+"/*", hdfs_path+"/history"], stdin=PIPE, bufsize=-1)
+    mv = Popen(["hadoop", "fs", "-mv", hdfs_path+"/*.csv", hdfs_path+"/history"], stdin=PIPE, bufsize=-1)
     mv.communicate()
 
     put = Popen(["hadoop", "fs", "-put", file_full, hdfs_path], stdin=PIPE, bufsize=-1)
