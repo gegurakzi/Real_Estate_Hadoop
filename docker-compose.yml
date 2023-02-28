@@ -157,6 +157,24 @@ services:
     stdin_open: true
     tty: true
 
+  client:
+    image: cluster:client
+    container_name: client
+    hostname: client
+    networks:
+      cluster-net:
+        ipv4_address: 172.16.238.8
+    ports:
+      - "9090:9090"
+    extra_hosts:
+      - "master01:172.16.238.2"
+      - "master02:172.16.238.3"
+      - "slave01:172.16.238.4"
+      - "slave02:172.16.238.5"
+      - "slave03:172.16.238.6"
+    stdin_open: true
+    tty: true
+
 networks:
   cluster-net:
     ipam:

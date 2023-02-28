@@ -2,7 +2,8 @@
 
 sudo docker-compose down && \
 \
-sudo docker build -t cluster:node . && \
+sudo docker build -t cluster:node -f node/Dockerfile . && \
+sudo docker build -t cluster:client -f client/Dockerfile . && \
 sudo docker-compose up -d && \
 \
 sudo bash sbin/deploy-ssh-keys.sh && \

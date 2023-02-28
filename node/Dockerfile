@@ -77,14 +77,14 @@ ENV ZOOKEEPER_HOME=/usr/local/lib/apache-zookeeper-3.7.1-bin
 ENV PATH=$PATH:$ZOOKEEPER_HOME/bin
 
 # Zookeeper env settings
-COPY lib/apache-zookeeper-3.7.1-bin/conf/zoo.cfg $ZOOKEEPER_HOME/conf
+COPY ../lib/apache-zookeeper-3.7.1-bin/conf/zoo.cfg $ZOOKEEPER_HOME/conf
 
 # Hadoop-Zookeeper HA env settings
-COPY lib/hadoop-3.3.4/etc/hadoop/core-site.xml $HADOOP_CONF_DIR
-COPY lib/hadoop-3.3.4/etc/hadoop/hdfs-site.xml $HADOOP_CONF_DIR
-COPY lib/hadoop-3.3.4/etc/hadoop/yarn-site.xml $HADOOP_CONF_DIR
-COPY lib/hadoop-3.3.4/etc/hadoop/mapred-site.xml $HADOOP_CONF_DIR
-COPY lib/hadoop-3.3.4/etc/hadoop/workers $HADOOP_CONF_DIR
+COPY ../lib/hadoop-3.3.4/etc/hadoop/core-site.xml $HADOOP_CONF_DIR
+COPY ../lib/hadoop-3.3.4/etc/hadoop/hdfs-site.xml $HADOOP_CONF_DIR
+COPY ../lib/hadoop-3.3.4/etc/hadoop/yarn-site.xml $HADOOP_CONF_DIR
+COPY ../lib/hadoop-3.3.4/etc/hadoop/mapred-site.xml $HADOOP_CONF_DIR
+COPY ../lib/hadoop-3.3.4/etc/hadoop/workers $HADOOP_CONF_DIR
 ENV HDFS_JOURNALNODE_USER=root
 ENV HDFS_ZKFC_USER=root
 ENV YARN_PROXYSERVER_USER=root
@@ -102,10 +102,7 @@ RUN \
     wget https://cdn.mysql.com//Downloads/Connector-J/mysql-connector-j-8.0.32.tar.gz &&\
     tar -xvf mysql-connector-j-8.0.32.tar.gz && \
     mv mysql-connector-j-8.0.32/mysql-connector-j-8.0.32.jar $JAVA_HOME/jre/lib/ext
-COPY lib/apache-hive-3.1.3-bin/conf/hive-site.xml $HIVE_HOME/conf
-
-RUN \
-    yum install -y epel-release erlang rabbitmq-server
+COPY ../lib/apache-hive-3.1.3-bin/conf/hive-site.xml $HIVE_HOME/conf
 
 # Spark installation
 RUN \
@@ -116,11 +113,12 @@ ENV SPARK_HOME=/usr/local/lib/spark-3.3.2-bin-hadoop3
 ENV PATH=$PATH:$SPARK_HOME/bin
 
 # Spark env settings
-COPY lib/spark-3.3.2-bin-hadoop3/conf/spark-defaults.conf $SPARK_HOME/conf/spark-defaults.conf
-COPY lib/spark-3.3.2-bin-hadoop3/conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
+COPY ../lib/spark-3.3.2-bin-hadoop3/conf/spark-defaults.conf $SPARK_HOME/conf/spark-defaults.conf
+COPY ../lib/spark-3.3.2-bin-hadoop3/conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
 
 # RabbitMQ installation
 RUN \
+    yum install -y epel-release && \
     wget http://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm && \
     rpm -Uvh erlang-solutions-1.0-1.noarch.rpm && \
     yum install erlang logrotate socat -y && \
@@ -141,7 +139,7 @@ ENV DAGS_FOLDER=/usr/local/lib/apache-airflow-2.5.0/dags
 ENV PYTHONPATH=$PYTHONPATH:$AIRFLOW_HOME/dags/lib
 
 # Airflow env settings
-COPY lib/apache-airflow-2.5.0/conf/airflow.cfg $AIRFLOW_HOME/conf
+COPY ../lib/apache-airflow-2.5.0/conf/airflow.cfg $AIRFLOW_HOME/conf
 ENV AIRFLOW_CONN_HIVE_CLI_DEFAULT=jdbc:hive2://hive:hive@localhost:10000/real_estate
 
 # Python packages for Airflow DAGs
