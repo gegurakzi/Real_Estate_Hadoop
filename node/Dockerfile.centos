@@ -1,16 +1,18 @@
-FROM ubuntu:22.04
+FROM centos:centos7
 
 MAINTAINER Malachai <prussian1933@naver.com>
 
 # Utilities
 RUN \
     cd /home && \
-    apt-get update && \
-    apt-get install net-tools vim wget curl -y && \
-    apt-get install ssh -y && \
-    apt-get install lsb build-essential gcc g++ make -y && \
-    apt-get install sqlite3 libsqlite3-dev -y && \
-    apt-get install python3-dev libsasl2-dev -y
+    yum update -y && \
+    yum install net-tools -y && \
+    yum install vim-enhanced -y && \
+    yum install wget -y && \
+    yum install openssh-server openssh-clients openssh-askpass -y && \
+    yum install gcc make openssl-devel bzip2-devel libffi-devel -y && \
+    yum install mysql-devel sqlite-devel -y && \
+    yum install build-essential gcc-c++ python39-devel cyrus-sasl cyrus-sasl-devel -y
 
 # Java installation
 RUN \
@@ -29,6 +31,7 @@ RUN \
     mv Python-3.9.5 /usr/local/lib/python-3.9.5 && \
     cd /usr/local/lib/python-3.9.5 && \
     ./configure --enable-optimizations && \
+    yum install make -y && \
     make altinstall && \
     ln -Tfs /usr/local/bin/python3.9 /usr/bin/python3 && \
     python3 -m pip install --upgrade pip && \
@@ -64,11 +67,29 @@ ENV HDFS_DATANODE_USER=root
 ENV HDFS_SECONDARYNAMENODE_USER=root
 ENV YARN_RESOURCEMANAGER_USER=root
 ENV YARN_NODEMANAGER_USER=root
+
+
+# Zookeeper installation
+RUN \
+    wget https://dlcdn.apache.org/zookeeper/zookeeper-3.7.1/apache-zookeeper-3.7.1-bin.tar.gz &&\
+    tar xvfz apache-zookeeper-3.7.1-bin.tar.gz && \
+    mv apache-zookeeper-3.7.1-bin /usr/local/lib/apache-zookeeper-3.7.1-bin && \
+    mkdir /usr/local/lib/apache-zookeeper-3.7.1-bin/data
+ENV ZOOKEEPER_HOME=/usr/local/lib/apache-zookeeper-3.7.1-bin
+ENV PATH=$PATH:$ZOOKEEPER_HOME/bin
+
+# Zookeeper env settings
+COPY ../lib/apache-zookeeper-3.7.1-bin/conf/zoo.cfg $ZOOKEEPER_HOME/conf
+
+# Hadoop-Zookeeper HA env settings
 COPY ../lib/hadoop-3.3.4/etc/hadoop/core-site.xml $HADOOP_CONF_DIR
 COPY ../lib/hadoop-3.3.4/etc/hadoop/hdfs-site.xml $HADOOP_CONF_DIR
 COPY ../lib/hadoop-3.3.4/etc/hadoop/yarn-site.xml $HADOOP_CONF_DIR
 COPY ../lib/hadoop-3.3.4/etc/hadoop/mapred-site.xml $HADOOP_CONF_DIR
 COPY ../lib/hadoop-3.3.4/etc/hadoop/workers $HADOOP_CONF_DIR
+ENV HDFS_JOURNALNODE_USER=root
+ENV HDFS_ZKFC_USER=root
+ENV YARN_PROXYSERVER_USER=root
 
 # Hive installation
 RUN \
@@ -97,15 +118,36 @@ ENV PATH=$PATH:$SPARK_HOME/bin
 COPY ../lib/spark-3.3.2-bin-hadoop3/conf/spark-defaults.conf $SPARK_HOME/conf/spark-defaults.conf
 COPY ../lib/spark-3.3.2-bin-hadoop3/conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
 
-# Jupyter Lab Installation
+# RabbitMQ installation
 RUN \
-    pip install pysqlite3 && \
-    pip install jupyterlab
+    yum install -y epel-release && \
+    wget http://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm && \
+    rpm -Uvh erlang-solutions-1.0-1.noarch.rpm && \
+    yum install erlang logrotate socat -y && \
+    rpm -Uvh https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.9.12/rabbitmq-server-3.9.12-1.el7.noarch.rpm
 
-# Jupyter Lab env settings
+# Airflow installation
 RUN \
-    pip install findspark && \
-    mkdir -p /home/notebook
+    pip install mysql-connector-python && \
+    pip install apache-airflow[mysql,celery]==2.5.0 && \
+    mkdir -p /usr/local/lib/apache-airflow-2.5.0/logs && \
+    mkdir -p /usr/local/lib/apache-airflow-2.5.0/dags && \
+    mkdir -p /usr/local/lib/apache-airflow-2.5.0/plugins && \
+    mkdir -p /usr/local/lib/apache-airflow-2.5.0/conf
+ENV AIRFLOW_HOME=/usr/local/lib/apache-airflow-2.5.0
+ENV AIRFLOW_CONFIG=$AIRFLOW_HOME/conf/airflow.cfg
+ENV DAGS_FOLDER=/usr/local/lib/apache-airflow-2.5.0/dags
+ENV PYTHONPATH=$PYTHONPATH:$AIRFLOW_HOME/dags/lib
+
+# Airflow env settings
+COPY ../lib/apache-airflow-2.5.0/conf/airflow.cfg $AIRFLOW_HOME/conf
+ENV AIRFLOW_CONN_HIVE_CLI_DEFAULT=jdbc:hive2://hive:hive@localhost:10000/real_estate
+
+# Python packages for Airflow DAGs
+RUN \
+    yum update -y && \
+    pip install pandas && \
+    pip install apache-airflow-providers-apache-hive
 
 ENTRYPOINT ["/bin/bash"]
 

@@ -161,6 +161,10 @@ services:
     image: cluster:client
     container_name: client
     hostname: client
+    volumes:
+      - type: bind
+        source: /home/malachai/Workspace/hadoop-cluster/client/notebook
+        target: /home/notebook
     networks:
       cluster-net:
         ipv4_address: 172.16.238.8

@@ -1,16 +1,18 @@
-FROM ubuntu:22.04
+FROM centos:centos7
 
 MAINTAINER Malachai <prussian1933@naver.com>
 
 # Utilities
 RUN \
     cd /home && \
-    apt-get update && \
-    apt-get install net-tools vim wget curl -y && \
-    apt-get install ssh -y && \
-    apt-get install lsb build-essential gcc g++ make -y && \
-    apt-get install sqlite3 libsqlite3-dev -y && \
-    apt-get install python3-dev libsasl2-dev -y
+    yum update -y && \
+    yum install net-tools -y && \
+    yum install vim-enhanced -y && \
+    yum install wget -y && \
+    yum install openssh-server openssh-clients openssh-askpass -y && \
+    yum install gcc make openssl-devel bzip2-devel libffi-devel -y && \
+    yum install gcc make gcc-c++ sqlite-devel -y && \
+    yum install python39-devel cyrus-sasl cyrus-sasl-devel -y
 
 # Java installation
 RUN \
@@ -29,6 +31,7 @@ RUN \
     mv Python-3.9.5 /usr/local/lib/python-3.9.5 && \
     cd /usr/local/lib/python-3.9.5 && \
     ./configure --enable-optimizations && \
+    yum install make -y && \
     make altinstall && \
     ln -Tfs /usr/local/bin/python3.9 /usr/bin/python3 && \
     python3 -m pip install --upgrade pip && \
