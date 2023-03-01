@@ -1,5 +1,5 @@
-# Zeppplin Client
+# Jupyter Lab
 
 ```
-[client]> zeppelin-daemon.sh start
+[client]> jupyter lab --ip=0.0.0.0 --port=9090 --allow-root
 ```

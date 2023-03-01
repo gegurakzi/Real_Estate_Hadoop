@@ -12,7 +12,7 @@ with DAG(
         catchup=False,
         tags=["extract"],
 ) as dag:
-    dealymd = "20220128"
+    dealymd = "20220127"
 
     INTERNAL_TABLE_ID = "trade"
     EXTERNAL_TABLE_ID = "trade_external_db"

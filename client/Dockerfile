@@ -10,7 +10,9 @@ RUN \
     yum install vim-enhanced -y && \
     yum install wget -y && \
     yum install openssh-server openssh-clients openssh-askpass -y && \
-    yum install gcc make openssl-devel bzip2-devel libffi-devel -y
+    yum install gcc make openssl-devel bzip2-devel libffi-devel -y && \
+    yum install gcc make gcc-c++ sqlite-devel -y && \
+    yum install python39-devel cyrus-sasl cyrus-sasl-devel -y
 
 # Java installation
 RUN \
@@ -35,20 +37,6 @@ RUN \
     python3 -m pip install --upgrade pip && \
     pip install --upgrade setuptools && \
     cd /
-
-# Zeppelin Installation
-RUN \
-    wget https://dlcdn.apache.org/zeppelin/zeppelin-0.10.1/zeppelin-0.10.1-bin-all.tgz && \
-    tar -xzvf zeppelin-0.10.1-bin-all.tgz && \
-    mv zeppelin-0.10.1-bin-all /usr/local/lib/zeppelin-0.10.1-bin-all
-ENV ZEPPELIN_HOME=/usr/local/lib/zeppelin-0.10.1-bin-all
-ENV PATH=$PATH:$ZEPPELIN_HOME/bin
-
-# Zeppellin
-ENV USE_HADOOP=true
-ENV ZEPPELIN_NOTEBOOK_DIR=$ZEPPELIN_HOME/notebook
-ENV ZEPPELIN_LOG_DIR=$ZEPPELIN_HOME/logs
-COPY ../lib/zeppelin-0.10.1-bin-all/conf/zeppelin-site.xml $ZEPPELIN_HOME/conf
 
 # Hadoop installation
 RUN \
@@ -112,6 +100,14 @@ ENV PATH=$PATH:$SPARK_HOME/bin
 COPY ../lib/spark-3.3.2-bin-hadoop3/conf/spark-defaults.conf $SPARK_HOME/conf/spark-defaults.conf
 COPY ../lib/spark-3.3.2-bin-hadoop3/conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
 
+# Jupyter Lab Installation
+RUN \
+    pip install pysqlite3 && \
+    pip install jupyterlab
+
+# Jupyter Lab env settings
+RUN \
+    pip install findspark
 
 ENTRYPOINT ["/bin/bash"]
 

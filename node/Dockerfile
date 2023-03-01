@@ -10,7 +10,9 @@ RUN \
     yum install vim-enhanced -y && \
     yum install wget -y && \
     yum install openssh-server openssh-clients openssh-askpass -y && \
-    yum install gcc make openssl-devel bzip2-devel libffi-devel -y
+    yum install gcc make openssl-devel bzip2-devel libffi-devel -y && \
+    yum install mysql-devel sqlite-devel -y && \
+    yum install build-essential gcc-c++ python39-devel cyrus-sasl cyrus-sasl-devel -y
 
 # Java installation
 RUN \
@@ -126,7 +128,6 @@ RUN \
 
 # Airflow installation
 RUN \
-    yum install mysql-devel sqlite-devel -y && \
     pip install mysql-connector-python && \
     pip install apache-airflow[mysql,celery]==2.5.0 && \
     mkdir -p /usr/local/lib/apache-airflow-2.5.0/logs && \
@@ -146,7 +147,6 @@ ENV AIRFLOW_CONN_HIVE_CLI_DEFAULT=jdbc:hive2://hive:hive@localhost:10000/real_es
 RUN \
     yum update -y && \
     pip install pandas && \
-    yum install build-essential gcc-c++ python39-devel cyrus-sasl cyrus-sasl-devel -y && \
     pip install apache-airflow-providers-apache-hive
 
 ENTRYPOINT ["/bin/bash"]
