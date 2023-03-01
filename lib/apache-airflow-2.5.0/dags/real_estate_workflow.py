@@ -12,7 +12,10 @@ with DAG(
         catchup=False,
         tags=["extract"],
 ) as dag:
-    dealymd = "20220127"
+    dealymd_initial = pendulum.date(2013, 1, 1)
+    iteration = 4
+
+    dealymd = str(dealymd_initial.add(days=0)).replace('-', '')
 
     INTERNAL_TABLE_ID = "trade"
     EXTERNAL_TABLE_ID = "trade_external_db"
@@ -125,32 +128,42 @@ with DAG(
         print(src)
 
 
-    create_table = HiveOperator(
-        task_id="create_table_trade",
-        hql=create_internal_real_estate_table_operation_hql(),
-        hive_cli_conn_id=hive_cli_connection_id(),
-        run_as_owner=True,
-        dag=dag
-    )
+    prev_load_on_internal_table = None
 
-    res = extract(dealymd)
+    for i in range(iteration):
+        dealymd = str(dealymd_initial.add(days=i)).replace('-', '')
 
-    print_res = extract_filepath_print(res)
+        create_table = HiveOperator(
+            task_id=f"create_table_trade_{dealymd}",
+            hql=create_internal_real_estate_table_operation_hql(),
+            hive_cli_conn_id=hive_cli_connection_id(),
+            run_as_owner=True,
+            dag=dag
+        )
 
-    load_external_table = HiveOperator(
-        task_id="load_csv_on_table",
-        hql=load_external_real_estate_table_operation_hql(str(res)),
-        hive_cli_conn_id=hive_cli_connection_id(),
-        run_as_owner=True,
-        dag=dag
-    )
+        res = extract(dealymd)
 
-    load_on_internal_table = HiveOperator(
-        task_id="load_external_data_on_internal_table",
-        hql=load_on_real_estate_table_operation_hql(),
-        hive_cli_conn_id=hive_cli_connection_id(),
-        run_as_owner=True,
-        dag=dag
-    )
+        print_res = extract_filepath_print(res)
 
-    print_res >> create_table >> load_external_table >> load_on_internal_table
+        load_external_table = HiveOperator(
+            task_id=f"load_csv_on_table_{dealymd}",
+            hql=load_external_real_estate_table_operation_hql(str(res)),
+            hive_cli_conn_id=hive_cli_connection_id(),
+            run_as_owner=True,
+            dag=dag
+        )
+
+        load_on_internal_table = HiveOperator(
+            task_id=f"load_external_data_on_internal_table_{dealymd}",
+            hql=load_on_real_estate_table_operation_hql(),
+            hive_cli_conn_id=hive_cli_connection_id(),
+            run_as_owner=True,
+            dag=dag
+        )
+
+        if prev_load_on_internal_table is not None:
+            prev_load_on_internal_table >> load_external_table
+
+        print_res >> create_table >> load_external_table >> load_on_internal_table
+
+        prev_load_on_internal_table = load_on_internal_table
