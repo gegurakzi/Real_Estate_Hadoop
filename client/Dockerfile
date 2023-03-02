@@ -50,25 +50,8 @@ ENV PATH=$PATH:$HADOOP_HOME/bin
 ENV PATH=$PATH:$HADOOP_HOME/sbin
 
 # Hadoop env settings
-RUN \
-    mkdir -p /usr/local/lib/hadoop-3.3.4/pids && \
-    echo \
-        $'export HADOOP_PID_DIR=/usr/local/lib/hadoop-3.3.4/pids \n\
-          export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-8u342-b07 \n\
-          export CLASSPATH=$JAVA_HOME/lib:$JAVA_HOME/lib/ext:$JAVA_HOME/jre/lib:$JAVA_HOME/jre/lib/ext \n\
-          export HDFS_NAMENODE_USER="root" \n\
-          export HDFS_DATANODE_USER="root" \n\
-          export HDFS_SECONDARYNAMENODE_USER="root" \n\
-          export YARN_RESOURCEMANAGER_USER="root" \n\
-          export YARN_NODEMANAGER_USER="root" \n\
-          ' >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh
 ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
-ENV HADOOP_PID_DIR=$HADOOP_HOME/pids
-ENV HDFS_NAMENODE_USER=root
-ENV HDFS_DATANODE_USER=root
-ENV HDFS_SECONDARYNAMENODE_USER=root
-ENV YARN_RESOURCEMANAGER_USER=root
-ENV YARN_NODEMANAGER_USER=root
+COPY ../lib/hadoop-3.3.4/etc/hadoop/hadoop-env.sh $HADOOP_CONF_DIR
 
 # Hive installation
 RUN \
