@@ -2,8 +2,8 @@
 
 sudo docker-compose down && \
 \
-sudo docker build -t cluster:node -f node/Dockerfile.centos . && \
-sudo docker build -t cluster:client -f client/Dockerfile.centos . && \
+sudo docker build -t cluster:node -f node/Dockerfile . && \
+sudo docker build -t cluster:client -f client/Dockerfile . && \
 sudo docker-compose up -d && \
 \
 sudo bash sbin/deploy-ssh-keys.sh && \
@@ -46,12 +46,18 @@ sudo docker exec master01 hdfs --daemon start journalnode && \
 sudo docker exec master02 hdfs --daemon start journalnode && \
 sudo docker exec slave01 hdfs --daemon start journalnode && \
 \
-sudo docker exec master01 sh -c "hdfs namenode -format" && \
-sudo docker exec master01 sh -c "start-dfs.sh" && \
-sudo docker exec master02 sh -c "hdfs namenode -bootstrapStandby" && \
+sudo docker exec master01 hdfs namenode -format && \
+sudo docker exec master01 start-dfs.sh && \
+sudo docker exec master02 hdfs namenode -bootstrapStandby && \
 \
 sudo docker exec master01 sh -c "start-yarn.sh" && \
 sudo docker exec master01 sh -c "mapred --daemon start historyserver" && \
 sudo docker exec master02 sh -c "mapred --daemon start historyserver" && \
 \
-sudo docker exec master01 schematool -initSchema -dbType mysql
+sudo docker exec master01 schematool -initSchema -dbType mysql && \
+\
+sudo docker exec master01 sh -c "flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/conf/flume-hdfs-conf.properties -n myhdfs" && \
+sudo docker exec master02 sh -c "flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/conf/flume-hdfs-conf.properties -n myhdfs" && \
+sudo docker exec slave01 sh -c "flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/conf/flume-hdfs-conf.properties -n myhdfs" && \
+sudo docker exec slave02 sh -c "flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/conf/flume-hdfs-conf.properties -n myhdfs" && \
+sudo docker exec slave03 sh -c "flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -n myhdfs"
