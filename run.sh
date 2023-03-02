@@ -56,10 +56,10 @@ sudo docker exec master02 sh -c "mapred --daemon start historyserver" && \
 \
 sudo docker exec master01 schematool -initSchema -dbType mysql && \
 \
-FLUME_CONF_DIR=/usr/local/lib/apache-flume-1.11.0-bin/conf
-FLUME_LOG_DIR=/usr/local/lib/apache-flume-1.11.0-bin
-sudo docker exec master01 sh -c "flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n myhdfs" && \
-sudo docker exec master02 sh -c "flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n myhdfs" && \
-sudo docker exec slave01 sh -c "flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n myhdfs" && \
-sudo docker exec slave02 sh -c "flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n myhdfs" && \
-sudo docker exec slave03 sh -c "flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n myhdfs"
+export FLUME_CONF_DIR=/usr/local/lib/apache-flume-1.11.0-bin/conf && \
+export FLUME_LOG_DIR=/usr/local/lib/apache-flume-1.11.0-bin && \
+sudo docker exec -d master01 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n myhdfs && \
+sudo docker exec -d master02 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n myhdfs && \
+sudo docker exec -d slave01 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n myhdfs && \
+sudo docker exec -d slave02 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n myhdfs && \
+sudo docker exec -d slave03 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n myhdfs
