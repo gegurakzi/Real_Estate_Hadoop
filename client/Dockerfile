@@ -19,7 +19,7 @@ RUN \
     wget https://github.com/AdoptOpenJDK/openjdk8-upstream-binaries/releases/download/jdk8u342-b07/OpenJDK8U-jdk_x64_linux_8u342b07.tar.gz && \
     tar -xvf OpenJDK8U-jdk_x64_linux_8u342b07.tar.gz && \
     mv openjdk-8u342-b07 /usr/lib/jvm/java-1.8.0-openjdk-8u342-b07 && \
-    mkdir -p $JAVA_HOME/lib/ext
+    mkdir -p /usr/lib/jvm/java-1.8.0-openjdk-8u342-b07/lib/ext
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-8u342-b07
 ENV PATH=$PATH:$JAVA_HOME/bin
 
@@ -41,6 +41,7 @@ RUN \
 
 # Hadoop installation
 RUN \
+    mkdir -p /usr/local/lib && \
     wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.4/hadoop-3.3.4.tar.gz && \
     tar xvzf hadoop-3.3.4.tar.gz && \
     mv hadoop-3.3.4 /usr/local/lib/hadoop-3.3.4
@@ -50,15 +51,16 @@ ENV PATH=$PATH:$HADOOP_HOME/sbin
 
 # Hadoop env settings
 RUN \
+    mkdir -p /usr/local/lib/hadoop-3.3.4/pids && \
     echo \
         $'export HADOOP_PID_DIR=/usr/local/lib/hadoop-3.3.4/pids \n\
           export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-8u342-b07 \n\
           export CLASSPATH=$JAVA_HOME/lib:$JAVA_HOME/lib/ext:$JAVA_HOME/jre/lib:$JAVA_HOME/jre/lib/ext \n\
-          export HDFS_NAMENODE_USER=\"root\" \n\
-          export HDFS_DATANODE_USER=\"root\" \n\
-          export HDFS_SECONDARYNAMENODE_USER=\"root\" \n\
-          export YARN_RESOURCEMANAGER_USER=\"root\" \n\
-          export YARN_NODEMANAGER_USER=\"root\" \n\
+          export HDFS_NAMENODE_USER="root" \n\
+          export HDFS_DATANODE_USER="root" \n\
+          export HDFS_SECONDARYNAMENODE_USER="root" \n\
+          export YARN_RESOURCEMANAGER_USER="root" \n\
+          export YARN_NODEMANAGER_USER="root" \n\
           ' >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh
 ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 ENV HADOOP_PID_DIR=$HADOOP_HOME/pids
@@ -67,11 +69,6 @@ ENV HDFS_DATANODE_USER=root
 ENV HDFS_SECONDARYNAMENODE_USER=root
 ENV YARN_RESOURCEMANAGER_USER=root
 ENV YARN_NODEMANAGER_USER=root
-COPY ../lib/hadoop-3.3.4/etc/hadoop/core-site.xml $HADOOP_CONF_DIR
-COPY ../lib/hadoop-3.3.4/etc/hadoop/hdfs-site.xml $HADOOP_CONF_DIR
-COPY ../lib/hadoop-3.3.4/etc/hadoop/yarn-site.xml $HADOOP_CONF_DIR
-COPY ../lib/hadoop-3.3.4/etc/hadoop/mapred-site.xml $HADOOP_CONF_DIR
-COPY ../lib/hadoop-3.3.4/etc/hadoop/workers $HADOOP_CONF_DIR
 
 # Hive installation
 RUN \
