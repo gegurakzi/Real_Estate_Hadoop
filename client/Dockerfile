@@ -8,9 +8,10 @@ RUN \
     apt-get update && \
     apt-get install net-tools vim wget curl -y && \
     apt-get install ssh -y && \
-    apt-get install lsb build-essential gcc g++ make -y && \
-    apt-get install sqlite3 libsqlite3-dev -y && \
-    apt-get install python3-dev libsasl2-dev -y
+    apt-get install build-essential gcc g++ make -y
+RUN \
+    apt-get install zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libbz2-dev libsasl2-dev -y && \
+    apt-get install sqlite3 libsqlite3-dev -y
 
 # Java installation
 RUN \
@@ -24,20 +25,22 @@ ENV PATH=$PATH:$JAVA_HOME/bin
 
 # Python3 installation
 RUN \
+    mkdir -p /usr/local/lib && \
     wget https://www.python.org/ftp/python/3.9.5/Python-3.9.5.tgz && \
-    tar -xvf Python-3.9.5.tgz && \
+    tar -xzf Python-3.9.5.tgz && \
     mv Python-3.9.5 /usr/local/lib/python-3.9.5 && \
     cd /usr/local/lib/python-3.9.5 && \
     ./configure --enable-optimizations && \
-    make altinstall && \
-    ln -Tfs /usr/local/bin/python3.9 /usr/bin/python3 && \
-    python3 -m pip install --upgrade pip && \
+    make -j 12 && \
+    make altinstall
+RUN \
+    python3.9 -m pip install pip --upgrade && \
     pip install --upgrade setuptools && \
-    cd /
+    cd /home && \
+    apt install python3-dev -y
 
 # Hadoop installation
 RUN \
-    mkdir -p /usr/local/lib && \
     wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.4/hadoop-3.3.4.tar.gz && \
     tar xvzf hadoop-3.3.4.tar.gz && \
     mv hadoop-3.3.4 /usr/local/lib/hadoop-3.3.4

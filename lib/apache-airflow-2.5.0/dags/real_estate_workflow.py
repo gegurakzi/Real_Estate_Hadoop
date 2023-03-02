@@ -13,7 +13,7 @@ with DAG(
         tags=["extract"],
 ) as dag:
     dealymd_initial = pendulum.date(2013, 1, 1)
-    iteration = 4
+    iteration = 5
 
     dealymd = str(dealymd_initial.add(days=0)).replace('-', '')
 
@@ -128,8 +128,6 @@ with DAG(
         print(src)
 
 
-    prev_load_on_internal_table = None
-
     for i in range(iteration):
         dealymd = str(dealymd_initial.add(days=i)).replace('-', '')
 
@@ -161,9 +159,4 @@ with DAG(
             dag=dag
         )
 
-        if prev_load_on_internal_table is not None:
-            prev_load_on_internal_table >> load_external_table
-
         print_res >> create_table >> load_external_table >> load_on_internal_table
-
-        prev_load_on_internal_table = load_on_internal_table

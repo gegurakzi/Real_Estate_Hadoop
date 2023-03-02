@@ -1,18 +1,17 @@
-FROM centos:centos7
+FROM ubuntu:22.04
 
 MAINTAINER Malachai <prussian1933@naver.com>
 
 # Utilities
 RUN \
     cd /home && \
-    yum update -y && \
-    yum install net-tools -y && \
-    yum install vim-enhanced -y && \
-    yum install wget -y && \
-    yum install openssh-server openssh-clients openssh-askpass -y && \
-    yum install gcc make openssl-devel bzip2-devel libffi-devel -y && \
-    yum install mysql-devel sqlite-devel -y && \
-    yum install build-essential gcc-c++ python39-devel cyrus-sasl cyrus-sasl-devel -y
+    apt-get update && \
+    apt-get install net-tools vim wget curl -y && \
+    apt-get install ssh -y && \
+    apt-get install build-essential gcc g++ make -y
+RUN \
+    apt-get install zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libbz2-dev libsasl2-dev -y && \
+    apt-get install sqlite3 libsqlite3-dev -y
 
 # Java installation
 RUN \
@@ -26,17 +25,19 @@ ENV PATH=$PATH:$JAVA_HOME/bin
 
 # Python3 installation
 RUN \
+    mkdir -p /usr/local/lib && \
     wget https://www.python.org/ftp/python/3.9.5/Python-3.9.5.tgz && \
-    tar -xvf Python-3.9.5.tgz && \
+    tar -xzf Python-3.9.5.tgz && \
     mv Python-3.9.5 /usr/local/lib/python-3.9.5 && \
     cd /usr/local/lib/python-3.9.5 && \
     ./configure --enable-optimizations && \
-    yum install make -y && \
-    make altinstall && \
-    ln -Tfs /usr/local/bin/python3.9 /usr/bin/python3 && \
-    python3 -m pip install --upgrade pip && \
+    make -j 12 && \
+    make altinstall
+RUN \
+    python3.9 -m pip install pip --upgrade && \
     pip install --upgrade setuptools && \
-    cd /
+    cd /home && \
+    apt install python3-dev -y
 
 # Hadoop installation
 RUN \
@@ -120,14 +121,18 @@ COPY ../lib/spark-3.3.2-bin-hadoop3/conf/spark-env.sh $SPARK_HOME/conf/spark-env
 
 # RabbitMQ installation
 RUN \
-    yum install -y epel-release && \
-    wget http://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm && \
-    rpm -Uvh erlang-solutions-1.0-1.noarch.rpm && \
-    yum install erlang logrotate socat -y && \
-    rpm -Uvh https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.9.12/rabbitmq-server-3.9.12-1.el7.noarch.rpm
+    wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && \
+    dpkg -i erlang-solutions_1.0_all.deb && \
+    apt-get update && \
+    apt install erlang logrotate socat -y
+RUN \
+    wget https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.10.9/rabbitmq-server_3.10.9-1_all.deb && \
+    dpkg -i rabbitmq-server_3.10.9-1_all.deb
 
 # Airflow installation
 RUN \
+    apt install libmysqlclient-dev -y && \
+    pip install mysqlclient && \
     pip install mysql-connector-python && \
     pip install apache-airflow[mysql,celery]==2.5.0 && \
     mkdir -p /usr/local/lib/apache-airflow-2.5.0/logs && \
@@ -145,9 +150,11 @@ ENV AIRFLOW_CONN_HIVE_CLI_DEFAULT=jdbc:hive2://hive:hive@localhost:10000/real_es
 
 # Python packages for Airflow DAGs
 RUN \
-    yum update -y && \
+    apt-get update && \
     pip install pandas && \
     pip install apache-airflow-providers-apache-hive
+
+
 
 ENTRYPOINT ["/bin/bash"]
 
