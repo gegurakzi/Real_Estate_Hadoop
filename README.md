@@ -19,6 +19,18 @@ RabbitMQ Server: 15674:15672
 Flower UI(web management for Airflow celery workers): 5557:5555
 ```
 
+## 0. 실행법 요약
+```
+[local]> sudo bash run.sh
+[local]> sudo docker attach client
+[client]> jupyter lab --ip=0.0.0.0 --port=9090 --allow-root
+```
+daemons
+- Zookeeper(JN)
+- Hadoop(NN, DN, RM, NM)
+- Rabbitmq
+- Airflow(Celery, webserver, scheduler)
+- Jupyter Lab
 
 
 ## 1. Dockerfile 빌드
