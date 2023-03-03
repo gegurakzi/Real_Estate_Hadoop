@@ -11,7 +11,8 @@ RUN \
     apt-get install build-essential gcc g++ make -y
 RUN \
     apt-get install zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libbz2-dev libsasl2-dev -y && \
-    apt-get install sqlite3 libsqlite3-dev -y
+    apt-get install sqlite3 libsqlite3-dev -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
 
 # Java installation
 RUN \
