@@ -24,6 +24,14 @@ RUN \
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-8u342-b07
 ENV PATH=$PATH:$JAVA_HOME/bin
 
+# Scala Installation
+RUN \
+    wget https://downloads.lightbend.com/scala/2.12.17/scala-2.12.17.tgz && \
+    tar -xvf scala-2.12.17.tgz && \
+    mv scala-2.12.17 /usr/local/lib/scala-2.12.17
+ENV SCALA_HOME=/usr/local/lib/scala-2.12.17
+ENV PATH=$PATH:$SCALA_HOME/bin
+
 # Python3 installation
 RUN \
     mkdir -p /usr/local/lib && \
@@ -53,7 +61,6 @@ ENV PATH=$PATH:$HADOOP_HOME/sbin
 # Hadoop env settings
 ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 COPY ../lib/hadoop-3.3.4/etc/hadoop/hadoop-env.sh $HADOOP_CONF_DIR
-
 
 # Zookeeper installation
 RUN \
@@ -139,6 +146,18 @@ RUN \
     pip install pandas && \
     pip install apache-airflow-providers-apache-hive
 
+# Kafka Installation
+RUN \
+    wget https://dlcdn.apache.org/kafka/3.4.0/kafka_2.12-3.4.0.tgz && \
+    tar -xvf kafka_2.12-3.4.0.tgz && \
+    mv kafka_2.12-3.4.0 /usr/local/lib/kafka_2.12-3.4.0
+ENV KAFKA_HOME=/usr/local/lib/kafka_2.12-3.4.0
+ENV PATH=$PATH:$KAFKA_HOME/bin
+
+# Kafka env settings
+ENV KAFKA_CONF_DIR=$KAFKA_HOME/config
+
+# Flume Installation
 RUN \
     wget https://dlcdn.apache.org/flume/1.11.0/apache-flume-1.11.0-bin.tar.gz && \
     tar -xvf apache-flume-1.11.0-bin.tar.gz && \
@@ -152,28 +171,10 @@ COPY ../lib/apache-flume-1.11.0-bin/conf/flume-conf.properties $FLUME_CONF_DIR
 COPY ../lib/apache-flume-1.11.0-bin/conf/flume-hdfs-conf.properties $FLUME_CONF_DIR
 COPY ../lib/apache-flume-1.11.0-bin/conf/flume-kafka-conf.properties $FLUME_CONF_DIR
 
-# Scala Installation
-RUN \
-    wget https://downloads.lightbend.com/scala/2.13.8/scala-2.13.8.tgz && \
-    tar -xvf scala-2.13.8.tgz && \
-    mv scala-2.13.8 /usr/local/lib/scala-2.13.8
-ENV SCALA_HOME=/usr/local/lib/scala-2.13.8
-ENV PATH=$PATH:$SCALA_HOME/bin
-
-# Kafka Installation
-RUN \
-    wget https://dlcdn.apache.org/kafka/3.4.0/kafka_2.13-3.4.0.tgz && \
-    tar -xvf kafka_2.13-3.4.0.tgz && \
-    mv kafka_2.13-3.4.0 /usr/local/lib/kafka_2.13-3.4.0
-ENV KAFKA_HOME=/usr/local/lib/kafka_2.13-3.4.0
-ENV PATH=$PATH:$KAFKA_HOME/bin
-
-ENV KAFKA_CONF_DIR=$KAFKA_HOME/config
-
-# Kafka Web UI
-RUN \
-    wget https://github.com/provectus/kafka-ui/releases/download/v0.5.0/kafka-ui-api-v0.5.0.jar && \
-    mv kafka-ui-api-v0.5.0.jar /usr/local/lib/kafka_2.13-3.4.0/kafka-ui-api-v0.5.0.jar
-COPY ../lib/kafka_2.13-3.4.0/config/web-application.yml $KAFKA_CONF_DIR
+# Kafka Web UI (Not available since Java<=1.17)
+#RUN \
+#    wget https://github.com/provectus/kafka-ui/releases/download/v0.5.0/kafka-ui-api-v0.5.0.jar && \
+#    mv kafka-ui-api-v0.5.0.jar /usr/local/lib/kafka_2.12-3.4.0/kafka-ui-api-v0.5.0.jar
+#COPY ../lib/kafka_2.12-3.4.0/config/web-application.yml $KAFKA_CONF_DIR
 
 ENTRYPOINT ["/bin/bash"]

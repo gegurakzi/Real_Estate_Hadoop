@@ -24,6 +24,14 @@ RUN \
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-8u342-b07
 ENV PATH=$PATH:$JAVA_HOME/bin
 
+# Scala Installation
+RUN \
+    wget https://downloads.lightbend.com/scala/2.12.17/scala-2.12.17.tgz && \
+    tar -xvf scala-2.12.17.tgz && \
+    mv scala-2.12.17 /usr/local/lib/scala-2.12.17
+ENV SCALA_HOME=/usr/local/lib/scala-2.12.17
+ENV PATH=$PATH:$SCALA_HOME/bin
+
 # Python3 installation
 RUN \
     mkdir -p /usr/local/lib && \
