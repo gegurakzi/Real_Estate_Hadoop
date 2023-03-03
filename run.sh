@@ -19,7 +19,7 @@ sudo docker exec -u root metastore mysql -u root -proot -e "
 \
 sudo docker exec slave01 rabbitmq-plugins enable rabbitmq_management && \
 sudo docker exec slave01 /usr/sbin/rabbitmq-server start -detached && \
-sleep 5 && \
+sleep 10 && \
 sudo docker exec slave01 rabbitmqctl add_user airflow-user airflow-user && \
 sudo docker exec slave01 rabbitmqctl add_vhost airflow && \
 sudo docker exec slave01 rabbitmqctl set_user_tags airflow-user administrator && \
@@ -49,6 +49,8 @@ sudo docker exec -d master02 kafka-server-start.sh $KAFKA_HOME/config/server.pro
 sudo docker exec -d slave01 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
 sudo docker exec -d slave02 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
 sudo docker exec -d slave03 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
+\
+sudo docker exec java -Dspring.config.additional-location=$KAFKA_HOME/config/web-application.yml -jar $KAFKA_HOME/kafka-ui-api-v0.5.0.jar >> $KAFKA_HOME/logs/webserver.log
 \
 sudo docker exec master01 hdfs zkfc -formatZK && \
 sudo docker exec master01 hdfs --daemon start journalnode && \

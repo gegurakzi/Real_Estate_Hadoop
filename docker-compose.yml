@@ -23,6 +23,7 @@ services:
       - "18080:18080" # Spark Job History server
       - "4040:4040" # Spark Executer Web UI
       - "8090:8090" # YARN Web Proxy
+      - "9099:9099" # Kafka Web UI (unused: over JAVA 17)함
     extra_hosts:
       - "master02:172.16.238.3"
       - "slave01:172.16.238.4"

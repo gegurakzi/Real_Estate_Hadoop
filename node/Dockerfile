@@ -168,4 +168,12 @@ RUN \
 ENV KAFKA_HOME=/usr/local/lib/kafka_2.13-3.4.0
 ENV PATH=$PATH:$KAFKA_HOME/bin
 
+ENV KAFKA_CONF_DIR=$KAFKA_HOME/config
+
+# Kafka Web UI
+RUN \
+    wget https://github.com/provectus/kafka-ui/releases/download/v0.5.0/kafka-ui-api-v0.5.0.jar && \
+    mv kafka-ui-api-v0.5.0.jar /usr/local/lib/kafka_2.13-3.4.0/kafka-ui-api-v0.5.0.jar
+COPY ../lib/kafka_2.13-3.4.0/config/web-application.yml $KAFKA_CONF_DIR
+
 ENTRYPOINT ["/bin/bash"]
