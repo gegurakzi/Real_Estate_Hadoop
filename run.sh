@@ -41,6 +41,15 @@ sudo bash lib/apache-zookeeper-3.7.1-bin/sbin/deploy-myid.sh && \
 sudo docker exec master01 zkServer.sh start && \
 sudo docker exec master02 zkServer.sh start && \
 sudo docker exec slave01 zkServer.sh start && \
+\
+export KAFKA_HOME=/usr/local/lib/kafka_2.13-3.4.0 && \
+sudo bash lib/kafka_2.13-3.4.0/sbin/deploy-brokerid.sh && \
+sudo docker exec -d master01 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
+sudo docker exec -d master02 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
+sudo docker exec -d slave01 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
+sudo docker exec -d slave02 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
+sudo docker exec -d slave03 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
+\
 sudo docker exec master01 hdfs zkfc -formatZK && \
 sudo docker exec master01 hdfs --daemon start journalnode && \
 sudo docker exec master02 hdfs --daemon start journalnode && \
@@ -58,8 +67,8 @@ sudo docker exec master01 schematool -initSchema -dbType mysql && \
 \
 export FLUME_CONF_DIR=/usr/local/lib/apache-flume-1.11.0-bin/conf && \
 export FLUME_LOG_DIR=/usr/local/lib/apache-flume-1.11.0-bin && \
-sudo docker exec -d master01 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n myhdfs && \
-sudo docker exec -d master02 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n myhdfs && \
-sudo docker exec -d slave01 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n myhdfs && \
-sudo docker exec -d slave02 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n myhdfs && \
-sudo docker exec -d slave03 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n myhdfs
+sudo docker exec -d master01 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log && \
+sudo docker exec -d master02 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log && \
+sudo docker exec -d slave01 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log && \
+sudo docker exec -d slave02 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log && \
+sudo docker exec -d slave03 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log

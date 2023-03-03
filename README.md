@@ -124,3 +124,13 @@ Password: hive
 Port: 10000
 Extra: {"use_beeline": false, "auth": ""}
 ```
+
+## 10. Kafka Server 시작
+```
+[master01~slave03]> kafka-server-start.sh $KAFKA_HOME/config/server.properties
+
+## Server 테스트
+[master01]> kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092
+[master02]> kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
+[slave03]> kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
+```

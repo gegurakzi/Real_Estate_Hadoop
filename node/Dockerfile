@@ -141,7 +141,7 @@ RUN \
 
 RUN \
     wget https://dlcdn.apache.org/flume/1.11.0/apache-flume-1.11.0-bin.tar.gz && \
-    tar xvfz apache-flume-1.11.0-bin.tar.gz && \
+    tar -xvf apache-flume-1.11.0-bin.tar.gz && \
     mv apache-flume-1.11.0-bin /usr/local/lib/apache-flume-1.11.0-bin
 ENV FLUME_HOME=/usr/local/lib/apache-flume-1.11.0-bin
 ENV PATH=$PATH:$FLUME_HOME/bin
@@ -150,5 +150,22 @@ ENV PATH=$PATH:$FLUME_HOME/bin
 ENV FLUME_CONF_DIR=$FLUME_HOME/conf
 COPY ../lib/apache-flume-1.11.0-bin/conf/flume-conf.properties $FLUME_CONF_DIR
 COPY ../lib/apache-flume-1.11.0-bin/conf/flume-hdfs-conf.properties $FLUME_CONF_DIR
+COPY ../lib/apache-flume-1.11.0-bin/conf/flume-kafka-conf.properties $FLUME_CONF_DIR
+
+# Scala Installation
+RUN \
+    wget https://downloads.lightbend.com/scala/2.13.8/scala-2.13.8.tgz && \
+    tar -xvf scala-2.13.8.tgz && \
+    mv scala-2.13.8 /usr/local/lib/scala-2.13.8
+ENV SCALA_HOME=/usr/local/lib/scala-2.13.8
+ENV PATH=$PATH:$SCALA_HOME/bin
+
+# Kafka Installation
+RUN \
+    wget https://dlcdn.apache.org/kafka/3.4.0/kafka_2.13-3.4.0.tgz && \
+    tar -xvf kafka_2.13-3.4.0.tgz && \
+    mv kafka_2.13-3.4.0 /usr/local/lib/kafka_2.13-3.4.0
+ENV KAFKA_HOME=/usr/local/lib/kafka_2.13-3.4.0
+ENV PATH=$PATH:$KAFKA_HOME/bin
 
 ENTRYPOINT ["/bin/bash"]
