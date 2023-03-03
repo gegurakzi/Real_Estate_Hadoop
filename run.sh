@@ -38,39 +38,40 @@ sudo docker exec -d slave01 sh -c "airflow scheduler > /usr/local/lib/apache-air
 sudo docker exec -d slave01 sh -c "airflow webserver --port 5080 > /usr/local/lib/apache-airflow-2.5.0/logs/slave01-web-server.log" && \
 \
 sudo bash lib/apache-zookeeper-3.7.1-bin/sbin/deploy-myid.sh && \
-sudo docker exec master01 zkServer.sh start && \
-sudo docker exec master02 zkServer.sh start && \
-sudo docker exec slave01 zkServer.sh start && \
+sudo docker exec master01 sh -c "zkServer.sh start" && \
+sudo docker exec master02 sh -c "zkServer.sh start" && \
+sudo docker exec slave01 sh -c "zkServer.sh start" && \
+#\
+#export KAFKA_HOME=/usr/local/lib/kafka_2.13-3.4.0 && \
+#sudo bash lib/kafka_2.13-3.4.0/sbin/deploy-brokerid.sh && \
+#sudo docker exec -d master01 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
+#sudo docker exec -d master02 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
+#sudo docker exec -d slave01 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
+#sudo docker exec -d slave02 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
+#sudo docker exec -d slave03 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
+#\
+#sudo docker exec java -Dspring.config.additional-location=$KAFKA_HOME/config/web-application.yml -jar $KAFKA_HOME/kafka-ui-api-v0.5.0.jar >> $KAFKA_HOME/logs/webserver.log
 \
-export KAFKA_HOME=/usr/local/lib/kafka_2.13-3.4.0 && \
-sudo bash lib/kafka_2.13-3.4.0/sbin/deploy-brokerid.sh && \
-sudo docker exec -d master01 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
-sudo docker exec -d master02 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
-sudo docker exec -d slave01 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
-sudo docker exec -d slave02 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
-sudo docker exec -d slave03 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
+sudo docker exec master01 sh -c "hdfs zkfc -formatZK" && \
+sudo docker exec master01 sh -c "hdfs --daemon start journalnode" && \
+sudo docker exec master02 sh -c "hdfs --daemon start journalnode" && \
+sudo docker exec slave01 sh -c "hdfs --daemon start journalnode" && \
 \
-sudo docker exec java -Dspring.config.additional-location=$KAFKA_HOME/config/web-application.yml -jar $KAFKA_HOME/kafka-ui-api-v0.5.0.jar >> $KAFKA_HOME/logs/webserver.log
-\
-sudo docker exec master01 hdfs zkfc -formatZK && \
-sudo docker exec master01 hdfs --daemon start journalnode && \
-sudo docker exec master02 hdfs --daemon start journalnode && \
-sudo docker exec slave01 hdfs --daemon start journalnode && \
-\
-sudo docker exec master01 hdfs namenode -format && \
-sudo docker exec master01 start-dfs.sh && \
-sudo docker exec master02 hdfs namenode -bootstrapStandby && \
+sudo docker exec master01 sh -c "hdfs namenode -format" && \
+sudo docker exec master01 sh -c "start-dfs.sh" && \
+sudo docker exec master02 sh -c "hdfs namenode -bootstrapStandby" && \
+sudo docker exec master01 sh -c "start-all.sh" && \
 \
 sudo docker exec master01 sh -c "start-yarn.sh" && \
 sudo docker exec master01 sh -c "mapred --daemon start historyserver" && \
 sudo docker exec master02 sh -c "mapred --daemon start historyserver" && \
 \
-sudo docker exec master01 schematool -initSchema -dbType mysql && \
-\
-export FLUME_CONF_DIR=/usr/local/lib/apache-flume-1.11.0-bin/conf && \
-export FLUME_LOG_DIR=/usr/local/lib/apache-flume-1.11.0-bin && \
-sudo docker exec -d master01 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log && \
-sudo docker exec -d master02 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log && \
-sudo docker exec -d slave01 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log && \
-sudo docker exec -d slave02 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log && \
-sudo docker exec -d slave03 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log
+sudo docker exec master01 schematool -initSchema -dbType mysql
+#\
+#export FLUME_CONF_DIR=/usr/local/lib/apache-flume-1.11.0-bin/conf && \
+#export FLUME_LOG_DIR=/usr/local/lib/apache-flume-1.11.0-bin && \
+#sudo docker exec -d master01 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log && \
+#sudo docker exec -d master02 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log && \
+#sudo docker exec -d slave01 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log && \
+#sudo docker exec -d slave02 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log && \
+#sudo docker exec -d slave03 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log

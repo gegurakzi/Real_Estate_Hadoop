@@ -39,6 +39,11 @@
 # - SPARK_EXECUTOR_CORES, Number of cores for the executors (Default: 1).
 # - SPARK_EXECUTOR_MEMORY, Memory per Executor (e.g. 1000M, 2G) (Default: 1G)
 # - SPARK_DRIVER_MEMORY, Memory for Driver (e.g. 1000M, 2G) (Default: 1G)
+export SPARK_HOME=/usr/local/lib/spark-3.3.2-bin-hadoop3
+export SPARK_CONF_DIR=$SPARK_HOME/conf
+export HADOOP_HOME=/usr/local/lib/hadoop-3.3.4
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
 
 # Options for the daemons used in the standalone deploy mode
 # - SPARK_MASTER_HOST, to bind the master to a different IP address or hostname
@@ -72,4 +77,4 @@
 # - MKL_NUM_THREADS=1        Disable multi-threading of Intel MKL
 # - OPENBLAS_NUM_THREADS=1   Disable multi-threading of OpenBLAS
 
-export PYSPARK_DRIVER_PYTHON=/usr/bin/python3
+export PYSPARK_DRIVER_PYTHON=/usr/local/bin/python3.9

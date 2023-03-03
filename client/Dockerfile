@@ -53,6 +53,11 @@ ENV PATH=$PATH:$HADOOP_HOME/sbin
 # Hadoop env settings
 ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 COPY ../lib/hadoop-3.3.4/etc/hadoop/hadoop-env.sh $HADOOP_CONF_DIR
+COPY ../lib/hadoop-3.3.4/etc/hadoop/core-site.xml $HADOOP_CONF_DIR
+COPY ../lib/hadoop-3.3.4/etc/hadoop/hdfs-site.xml $HADOOP_CONF_DIR
+COPY ../lib/hadoop-3.3.4/etc/hadoop/yarn-site.xml $HADOOP_CONF_DIR
+COPY ../lib/hadoop-3.3.4/etc/hadoop/mapred-site.xml $HADOOP_CONF_DIR
+COPY ../lib/hadoop-3.3.4/etc/hadoop/workers $HADOOP_CONF_DIR
 
 # Hive installation
 RUN \
