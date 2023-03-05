@@ -171,10 +171,18 @@ COPY ../lib/apache-flume-1.11.0-bin/conf/flume-conf.properties $FLUME_CONF_DIR
 COPY ../lib/apache-flume-1.11.0-bin/conf/flume-hdfs-conf.properties $FLUME_CONF_DIR
 COPY ../lib/apache-flume-1.11.0-bin/conf/flume-kafka-conf.properties $FLUME_CONF_DIR
 
-# Kafka Web UI (Not available since Java<=1.17)
-#RUN \
-#    wget https://github.com/provectus/kafka-ui/releases/download/v0.5.0/kafka-ui-api-v0.5.0.jar && \
-#    mv kafka-ui-api-v0.5.0.jar /usr/local/lib/kafka_2.12-3.4.0/kafka-ui-api-v0.5.0.jar
-#COPY ../lib/kafka_2.12-3.4.0/config/web-application.yml $KAFKA_CONF_DIR
+# Cassandra Installation
+RUN \
+    wget https://dlcdn.apache.org/cassandra/4.0.8/apache-cassandra-4.0.8-bin.tar.gz && \
+    tar xzvf apache-cassandra-4.0.8-bin.tar.gz && \
+    mv apache-cassandra-4.0.8 /usr/local/lib/apache-cassandra-4.0.8
+ENV CASSANDRA_HOME=/usr/local/lib/apache-cassandra-4.0.8
+ENV PATH=$PATH:$CASSANDRA_HOME/bin
+
+# Cassandra env settings
+COPY ../lib/apache-cassandra-4.0.8/conf/cassandra-env.sh $CASSANDRA_HOME/conf
+COPY ../lib/apache-cassandra-4.0.8/conf/cassandra.yaml $CASSANDRA_HOME/conf
+COPY ../lib/apache-cassandra-4.0.8/conf/logback.xml $CASSANDRA_HOME/conf
+
 
 ENTRYPOINT ["/bin/bash"]

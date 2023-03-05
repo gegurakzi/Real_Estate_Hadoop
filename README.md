@@ -134,3 +134,14 @@ Extra: {"use_beeline": false, "auth": ""}
 [master02]> kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
 [slave03]> kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
 ```
+
+## 11. Cassandra 시작
+- master01, master02, slave01
+```
+[master01, master02, slave01]> cassandra -R >> $CASSANDRA_HOME/cassandra-startup.log
+
+## Database 테스트
+[master01]> clqsh master01 9042
+
+참고: https://sparkdia.tistory.com/5
+```

@@ -50,8 +50,6 @@ sudo docker exec -d slave01 kafka-server-start.sh $KAFKA_HOME/config/server.prop
 sudo docker exec -d slave02 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
 sudo docker exec -d slave03 kafka-server-start.sh $KAFKA_HOME/config/server.properties && \
 \
-sudo docker exec java -Dspring.config.additional-location=$KAFKA_HOME/config/web-application.yml -jar $KAFKA_HOME/kafka-ui-api-v0.5.0.jar >> $KAFKA_HOME/logs/webserver.log
-\
 sudo docker exec master01 sh -c "hdfs zkfc -formatZK" && \
 sudo docker exec master01 sh -c "hdfs --daemon start journalnode" && \
 sudo docker exec master02 sh -c "hdfs --daemon start journalnode" && \
@@ -66,7 +64,7 @@ sudo docker exec master01 sh -c "start-yarn.sh" && \
 sudo docker exec master01 sh -c "mapred --daemon start historyserver" && \
 sudo docker exec master02 sh -c "mapred --daemon start historyserver" && \
 \
-sudo docker exec master01 schematool -initSchema -dbType mysql
+sudo docker exec master01 schematool -initSchema -dbType mysql && \
 #\
 #export FLUME_CONF_DIR=/usr/local/lib/apache-flume-1.11.0-bin/conf && \
 #export FLUME_LOG_DIR=/usr/local/lib/apache-flume-1.11.0-bin && \
@@ -74,4 +72,10 @@ sudo docker exec master01 schematool -initSchema -dbType mysql
 #sudo docker exec -d master02 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log && \
 #sudo docker exec -d slave01 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log && \
 #sudo docker exec -d slave02 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log && \
-#sudo docker exec -d slave03 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log
+#sudo docker exec -d slave03 flume-ng agent -c $FLUME_CONF_DIR -f $FLUME_CONF_DIR/flume-hdfs-conf.properties -Dflume.log.dir=$FLUME_LOG_DIR -n hdfs-airflow-log && \
+\
+sudo docker exec -d master01 sh -c 'cassandra -R >> $CASSANDRA_HOME/cassandra-startup.log' && \
+sleep 10 && \
+sudo docker exec -d master02 sh -c 'cassandra -R >> $CASSANDRA_HOME/cassandra-startup.log' && \
+sleep 10 && \
+sudo docker exec -d slave01 sh -c 'cassandra -R >> $CASSANDRA_HOME/cassandra-startup.log'
