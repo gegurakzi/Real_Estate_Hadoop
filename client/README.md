@@ -10,11 +10,59 @@
 ## 1. BasicSparkWithHive
 
 - Spark와 Hive간 연결을 생성하고 HQL을 통해 데이터를 주고받는 연습 코드
+- 기본 세팅
+```
+# Hive 에 스키마가 생성되어있어야 한다.
+[master01]> hive
+hive>>> CREATE SCHEMA IF NOT EXISTS real_estate;
+
+# Hiveserver2 가 실행되고 있어야 한다.
+[master01]> hiveserver2
+
+# Hiveserver2 와의 연결이 설정 되어있어야 한다.
+# Airflow의 Web UI(localhost:5082)의 Admin-Connections 메뉴에서 다음을 추가한다.
+Connection Id: hive_cli_real_estate
+Connection Type: Hive Client Wrapper
+Host: master01
+Schema: real_estate
+Login: hive
+Password: hive
+Port: 10000
+Extra: {"use_beeline": false, "auth": ""}
+```
+
 
 ## 2. BasicSparkWithKafka
 
 - Spark를 Kafka의 consumer로 연결하고 실시간으로 데이터를 출력하는 연습 코드
+- 기본 설정
+```
+# Kafka Topic에 producer가 데이터를 넣을 수 있어야 한다.
+# 기본 Kafka producer 예제인 console-producer를 사용한다.
+[master01 || master02 || slave01 || slave02 || slave03]> kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092
+
+# 선택 사항으로, producer가 제대로 동작하고 있는지 확인하기 위해선 다음의 console-consumer를 사용할 수 있다.
+[master01 || master02 || slave01 || slave02 || slave03]> kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
+```
 
 ## 3. SparkWithKafkaCassandraSink
 
 - Kafka로부터 실시간 생성되는 데이터를 Spark로 전처리 하여 Cassandra DB에 저장하는 연습 코드
+- 기본 세팅
+```
+# Kafka에 데이터를 스트리밍 할 producer가 실행중이어야 한다.
+[master01 || master02 || slave01 || slave02 || slave03]> kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092
+
+# Cassandra에 데이터를 출력할 keyspace와 table이 존재해야 한다.
+[master01 || master02 || slave01]cqlsh> CREATE KEYSPACE mykeyspace WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };
+[master01 || master02 || slave01]cqlsh> USE mykeyspace;
+[master01 || master02 || slave01]cqlsh> CREATE TABLE users (
+                           key INT PRIMARY KEY,
+                           value TEXT,
+                           topic TEXT,
+                           partition INT,
+                           offset BIGINT,
+                           timestamp TIMESTAMP,
+                           "timestampType" INT
+                         );
+```

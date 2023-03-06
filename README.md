@@ -106,42 +106,16 @@ quit;
 [master02]> mapred --daemon start historyserver
 ```
 
-## 8. Hive 기본 스키마 생성 및 Hiveserver2 시작
-```
-[master01]> hive
-hive>>> CREATE SCHEMA IF NOT EXISTS real_estate;
-[master01]> hiveserver2
-```
-
-## 9. Airflow HiveServer2 Connection 설정
-```
-Connection Id: hive_cli_real_estate
-Connection Type: Hive Client Wrapper
-Host: master01
-Schema: real_estate
-Login: hive
-Password: hive
-Port: 10000
-Extra: {"use_beeline": false, "auth": ""}
-```
-
-## 10. Kafka Server 시작
+## 8. Kafka Server 시작
 ```
 [master01~slave03]> kafka-server-start.sh $KAFKA_HOME/config/server.properties
-
-## Server 테스트
-[master01]> kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092
-[master02]> kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
-[slave03]> kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
 ```
 
-## 11. Cassandra 시작
+## 9. Cassandra 시작
 - master01, master02, slave01
 ```
 [master01, master02, slave01]> cassandra -R >> $CASSANDRA_HOME/cassandra-startup.log
 
 ## Database 테스트
 [master01]> clqsh master01 9042
-
-참고: https://sparkdia.tistory.com/5
 ```
