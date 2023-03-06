@@ -29,6 +29,9 @@ Login: hive
 Password: hive
 Port: 10000
 Extra: {"use_beeline": false, "auth": ""}
+
+# Airflow 의 real_estate_workflow DAG 가 최소 한번 실행되어야 한다.
+# 이를 위해 Airflow Web UI 에 접속하여 admin/admin 계정에 로그인, Trigger DAG 를 실행한다.
 ```
 
 
