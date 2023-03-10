@@ -69,3 +69,18 @@ Extra: {"use_beeline": false, "auth": ""}
                            "timestampType" INT
                          );
 ```
+
+
+## Apendix A. SSH 터널링을 통한 VNC 접속
+```
+1. 로컬에 TigerVNC 클라이언트 설치
+> apt install tigervnc-viewer
+
+2. 원격에 VNC를 지원하는 Docker 컨테이너 실행
+> docker run -p 6080:80 -p 5900:5900 -v /dev/shm:/dev/shm dorowu/ubuntu-desktop-lxde-vnc
+
+3.로컬의 62000포트와 원격의 5900포트를 SSH 터널링
+> ssh -L 62000:localhost:5900 -N [원격 사용자 이름]@[원격 주소] -i [키페어 위치]
+
+4. 로컬의 TigerVNC 실행, 62000포트에 접속
+```
