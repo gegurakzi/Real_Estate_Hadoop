@@ -119,3 +119,6 @@ quit;
 ## Database 테스트
 [master01]> clqsh master01 9042
 ```
+
+## Appendix A.Client 실행 및 예제 연습
+- client/README.md 참고

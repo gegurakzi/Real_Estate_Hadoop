@@ -166,11 +166,16 @@ services:
       - type: bind
         source: ./client/notebook
         target: /home/notebook
+      - type: bind
+        source: /dev/shm
+        target: /dev/shm
     networks:
       cluster-net:
         ipv4_address: 172.16.238.8
     ports:
       - "9090:9090"
+      - "6080:80"
+      - "5900:5900"
     extra_hosts:
       - "master01:172.16.238.2"
       - "master02:172.16.238.3"

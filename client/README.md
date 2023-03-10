@@ -59,7 +59,7 @@ Extra: {"use_beeline": false, "auth": ""}
 # Cassandra에 데이터를 출력할 keyspace와 table이 존재해야 한다.
 [master01 || master02 || slave01]cqlsh> CREATE KEYSPACE mykeyspace WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };
 [master01 || master02 || slave01]cqlsh> USE mykeyspace;
-[master01 || master02 || slave01]cqlsh> CREATE TABLE users (
+[master01 || master02 || slave01]cqlsh> CREATE TABLE stream (
                            key INT PRIMARY KEY,
                            value TEXT,
                            topic TEXT,

@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM dorowu/ubuntu-desktop-lxde-vnc
 
 MAINTAINER Malachai <prussian1933@naver.com>
 
@@ -103,6 +103,3 @@ RUN \
 RUN \
     pip install findspark && \
     mkdir -p /home/notebook
-
-ENTRYPOINT ["/bin/bash"]
-
